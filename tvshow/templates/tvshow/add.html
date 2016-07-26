@@ -1,0 +1,32 @@
+{% extends 'tvshow/header.html' %}
+
+{% block content %}
+<div class="row text-xs-center">
+  <form class="form-inline" method="post" action="/add">{% csrf_token %}
+    <div class="form-group">
+      <input type="text" class="form-control" name="search_string" placeholder="TV Show Name">
+    </div>
+    <button type="submit" class="btn btn-primary">Add</button>
+  </form>
+</div>
+<br><br>
+{% if context.Flag %}
+<div class="row text-xs-center">
+  <div class="col-sm-10 col-md-offset-4 card-columns">
+    <div class="card text-xs-center">
+      <div class="card-header">
+        Added Succesfully!!
+      </div>
+      <div class="card-block">
+        <h4 class="card-title">{{context.Title}}</h4>
+      </div>
+      <img class="center-block" height='250' src="{{context.Poster}}" alt="Card image">
+      <div class="card-block">
+        <p class="card-text">{{context.Plot}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

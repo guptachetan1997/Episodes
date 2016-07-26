@@ -1,0 +1,20 @@
+{% extends "tvshow/header.html" %}
+
+{% block content %}
+<div class="container-fluid col-xs-12">
+  <div class="card-columns">
+    {% for show in show_data %}
+    <div class="card text-xs-center">
+      <div class="card-block">
+        <a href="/{{show.slug}}"><h4 class="card-title">{{show.title}}</h4></a>
+      </div>
+      <img class="center-block" height='250' src="{{show.poster}}" alt="Card image">
+      <div class="card-block">
+        <p class="card-text">{{show.plot}}</p>
+        <progress class="progress progress-striped" value="{{show.episode_watch_count}}" max="{{show.total_episodes}}"></progress>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

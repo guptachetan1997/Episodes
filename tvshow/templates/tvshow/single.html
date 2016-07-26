@@ -1,0 +1,77 @@
+{% extends 'tvshow/header.html' %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-block text-xs-center">
+        <a target="_blank" href="http://www.imdb.com/title/{{show.imbdID}}"><h4 class="card-title">{{show.title}}</h4></a>
+        <img class="img-fluid col-xs-offset-1" src="{{show.poster}}" alt="Card image cap">
+        <br>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#overview" role="tab">Overview</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#episodes" role="tab">Episodes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#next" role="tab">Next</a>
+      </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="tab-pane active" id="overview" role="tabpanel">
+        <div class="card-block">
+        <div class="card">
+          <p class="card-text">
+            {{show.plot}}
+          </p>
+        </div>
+        <progress class="progress progress-striped" value="{{show.episode_watch_count}}" max="{{show.total_episodes}}"></progress>
+      </div>
+      </div>
+
+      <div class="tab-pane" id="episodes" role="tabpanel">
+        <div class="card">
+          <div class="list-group list-group-flush">
+            {% for season in show.season_set.all %}
+            <a class="list-group-item" data-toggle="modal" data-target="#s{{season.number}}">
+              Season {{season.number}} <small> Watched {{season.watch_count}} of {{season.episode_count}} episodes.</small>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" id="next" role="tabpanel">
+        {% if next_episode %}
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-success">Next to Watch</li>
+            <li class="list-group-item">
+              {{next_episode.number}}. <a target="_blank" href="http://www.imdb.com/title/{{next_episode.imdbID}}">{{next_episode.title}}</a> [{{next_episode.imdbRating}}] <small>{{next_episode.release_date}}</small>
+              <form class='form-inline pull-xs-right' action="/episode_swt" method="post">{% csrf_token %}
+                <input type="hidden" name="episode_swt" value="{{next_episode.id}}">
+                {% if next_episode.status_watched == True %}
+                <input type="checkbox" onclick="this.form.submit();" checked>
+                {% else %}
+                <input type="checkbox" onclick="this.form.submit();">
+                {% endif %}
+              </form>
+            </li>
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% for season in show.season_set.all %}
+  {% include 'tvshow/single_season_modal_snippet.html' with season=season %}
+{% endfor %}
+{% endblock %}

@@ -75,3 +75,10 @@ def season_swt(request):
             show = season.show
             return HttpResponseRedirect('/%s'%show.slug)
     return HttpResponseRedirect('/')
+
+def search(request):
+    search_query = request.GET.get('query')
+    show_list = Show.objects.filter(seriesName__icontains=search_query)
+    if show_list and search_query:
+        return render(request, 'tvshow/home.html', {'show_data':show_list})
+    return HttpResponseRedirect('/')

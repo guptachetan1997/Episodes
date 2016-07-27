@@ -19,7 +19,7 @@
         <ul class="list-group">
           {% for episode in season.episode_set.all %}
           <li class="list-group-item">
-            {{episode.number}}. <a target="_blank" href="http://www.imdb.com/title/{{episode.imdbID}}">{{episode.title}}</a> [{{episode.imdbRating}}] <small>{{episode.release_date}}</small>
+            {{episode.number}}. <a data-toggle="collapse" href="#collapseS{{episode.season.number}}E{{episode.number}}" aria-expanded="false" aria-controls="collapseS{{episode.season.number}}E{{episode.number}}">{{episode.episodeName}}</a> <small>{{episode.firstAired}}</small>
             <form class='form-inline pull-xs-right' action="/episode_swt" method="post">{% csrf_token %}
               <input type="hidden" name="episode_swt" value="{{episode.id}}">
               {% if episode.status_watched == True %}
@@ -29,6 +29,13 @@
               {% endif %}
             </form>
           </li>
+          <div class="collapse" id="collapseS{{episode.season.number}}E{{episode.number}}">
+            <div class="card card-block card-inverse card-danger">
+              <p class="card-text">
+                {{episode.overview}}
+              </p>
+            </div>
+          </div>
           {% endfor %}
         </ul>
       </div>

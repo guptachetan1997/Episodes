@@ -2,37 +2,41 @@ from django.db import models
 from datetime import datetime
 from django.utils.text import slugify
 from django.db.models import Q
-from .utils.get_omdbapi import download_image
+from .utils.tvdb_api_wrap import download_image
 
 # Create your models here.
 
 class Show(models.Model):
-    title = models.CharField(max_length=50)
-    plot = models.TextField()
-    poster = models.CharField(max_length=150)
-    total_seasons = models.IntegerField()
-    imbdID = models.CharField(max_length=50)
+    tvdbID = models.CharField(max_length=50)
+    seriesName = models.CharField(max_length=50)
+    overview = models.TextField()
+    banner = models.CharField(max_length=150, null=True, blank=True)
+    imbdID = models.CharField(max_length=50, null=True, blank=True)
     status_watched = models.BooleanField(default=False)
     slug = models.SlugField(null = True, blank = True)
+    runningStatus = models.CharField(max_length=50)
+    firstAired = models.DateField(null=True, blank=True)
 
     def __str__(self):
-        return self.title
+        return self.seriesName
 
-    def add_show(self, data):
-        self.title = data['Title']
-        self.slug = slugify(self.title)
-        self.plot = data['Plot']
-        self.poster = download_image(data['Poster'], self.slug)
-        self.total_seasons = data['totalSeasons']
+    def add_show(self, data, runningStatus):
+        self.seriesName = data['seriesName']
+        self.slug = slugify(self.seriesName)
+        self.overview = data['overview']
+        self.banner = download_image('http://thetvdb.com/banners/' + data['banner'], self.slug)
         self.imbdID = data['imdbID']
+        self.tvdbID = data['tvdbID']
+        self.runningStatus = runningStatus
+        try:
+            self.firstAired = datetime.strptime(data['firstAired'], '%Y-%m-%d').date()
+        except:
+            pass
         self.save()
 
     @property
     def episode_watch_count(self):
-        count = 0
-        for season in self.season_set.all():
-            count += season.watch_count
-        return count
+        return Episode.objects.filter(Q(season__show = self),Q(status_watched=True)).count()
 
     @property
     def total_episodes(self):
@@ -41,18 +45,16 @@ class Show(models.Model):
 class Season(models.Model):
     show = models.ForeignKey(Show, on_delete=models.CASCADE)
     number = models.IntegerField()
-    episode_count = models.IntegerField()
     status_watched = models.BooleanField(default = False)
 
     def __str__(self):
-        showname = self.show.title
+        showname = self.show.seriesName
         return_string = showname + " S" + str(self.number)
         return return_string
 
-    def add_season(self, show, data):
+    def add_season(self, show, number):
         self.show = show
-        self.number = int(data['Season'])
-        self.episode_count = data['count']
+        self.number = number
         self.save()
 
     def wst(self):
@@ -74,34 +76,37 @@ class Season(models.Model):
         return Episode.objects.filter(Q(season=self),Q(status_watched=True)).count()
 
     @property
-    def total_count(self):
+    def episode_count(self):
         return Episode.objects.filter(season=self).count()
 
 class Episode(models.Model):
     season = models.ForeignKey(Season, on_delete=models.CASCADE)
-    title = models.CharField(max_length=50)
+    episodeName = models.CharField(max_length=50)
     number = models.IntegerField()
-    release_date = models.DateField(null=True, blank = True)
+    firstAired = models.DateField(null=True, blank = True)
     date_watched = models.DateField(null=True, blank=True)
-    imdbID = models.CharField(max_length=50)
-    imdbRating = models.CharField(max_length=50, default='N/A')
+    tvdbID = models.CharField(max_length=50)
+    overview = models.TextField(null=True, blank=True)
     status_watched = models.BooleanField(default=False)
 
     def __str__(self):
-        showname = self.season.show.title
+        showname = self.season.show.seriesName
         return_string = showname + " S" + str(self.season.number) + "E" + str(self.number)
         return return_string
 
     def add_episode(self, season, data):
         self.season = season
-        self.title = data['Title']
-        self.number = int(data['Episode'])
+        self.episodeName = data['episodeName']
+        self.number = int(data['number'])
         try:
-            self.release_date = datetime.strptime(data['Released'], '%Y-%m-%d').date()
+            self.firstAired = datetime.strptime(data['firstAired'], '%Y-%m-%d').date()
         except:
             pass
-        self.imdbID = data['imdbID']
-        self.imdbRating = data['imdbRating']
+        self.tvdbID = data['tvdbID']
+        try:
+            self.overview = data['overview']
+        except:
+            pass
         self.save()
 
     def wst(self):

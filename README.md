@@ -1,3 +1,3 @@
 # Episodes
 TV show Episode tracker built using django.
-Using http://www.omdbapi.com/ for metadata.
+Using http://thetvdb.com/ for metadata.

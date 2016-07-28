@@ -1,9 +1,14 @@
 import requests
 import json
-from urllib.parse import quote
+from django.utils import six
 import os,time
 from django.conf import settings
 from datetime import datetime
+
+if six.PY2:
+	from urllib import quote
+else:
+	from urllib.parse import quote
 
 def get_new_token():
 	apikey = 'DA10DC72930575CA'

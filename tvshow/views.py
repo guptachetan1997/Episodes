@@ -20,6 +20,16 @@ def home(request, view_type):
     return render(request, 'tvshow/home.html', {'show_data':show_data})
 
 @csrf_protect
+def update_show(request):
+    if request.method == 'POST':
+        show_id = request.POST.get('show_info')
+        show = Show.objects.get(id=show_id)
+        if show:
+            show.update_show_data()
+            return HttpResponseRedirect('/show/%s'%show.slug)
+    return HttpResponseRedirect('/')
+
+@csrf_protect
 def add(request):
     if request.method == 'POST':
         slug = ''
@@ -30,7 +40,7 @@ def add(request):
             show = Show()
             show.add_show(show_data, runningStatus)
             slug = show.slug
-            seasons_data = get_all_episodes(int(tvdbID))
+            seasons_data = get_all_episodes(int(tvdbID), 1)
             for i in range(len(seasons_data)):
                 string = 'Season' + str(i+1)
                 season_data = seasons_data[string]

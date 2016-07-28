@@ -74,9 +74,9 @@ def get_season_episode_list(tvdbID, number):
 	except:
 		return None
 
-def get_all_episodes(tvdbID):
+def get_all_episodes(tvdbID,start_season):
 	show = {}
-	for i in range(1,100):
+	for i in range(start_season,100):
 		season_data = get_season_episode_list(tvdbID, i)
 		if season_data:
 			show['Season'+str(i)] = season_data

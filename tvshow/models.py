@@ -2,7 +2,7 @@ from django.db import models
 from datetime import datetime
 from django.utils.text import slugify
 from django.db.models import Q
-from .utils.tvdb_api_wrap import download_image
+from .utils.tvdb_api_wrap import download_image,get_season_episode_list,get_all_episodes
 
 # Create your models here.
 
@@ -48,6 +48,33 @@ class Show(models.Model):
     @property
     def total_episodes(self):
         return Episode.objects.filter(season__show = self).count()
+
+    def update_show_data(self):
+        tvdbID = self.tvdbID
+        current_season = self.season_set.all().last()
+        current_season_db_data = current_season.episode_set.all()
+        current_season_oln_data = get_season_episode_list(tvdbID, current_season.number)
+        counter = 0
+        for db_episode,oln_episode in zip(current_season_db_data, current_season_oln_data):
+            db_episode.compare_or_update(oln_episode)
+            counter+=1
+        if counter < len(current_season_oln_data):
+            for new_episode in current_season_oln_data[counter:]:
+                if new_episode['episodeName']:
+                    episode = Episode()
+                    episode.add_episode(current_season,new_episode)
+        range_starter = current_season.number + 1
+        new_seasons = get_all_episodes(tvdbID, range_starter)
+        for i in range(len(new_seasons)):
+            string = 'Season' + str(range_starter+i)
+            season_data = new_seasons[string]
+            season = Season()
+            season.add_season(self, i+range_starter)
+            season_episodes_data = new_seasons[string]
+            for season_episode in season_episodes_data:
+                if season_episode['episodeName']:
+                    episode = Episode()
+                    episode.add_episode(season, season_episode)
 
 class Season(models.Model):
     show = models.ForeignKey(Show, on_delete=models.CASCADE)
@@ -114,4 +141,11 @@ class Episode(models.Model):
 
     def wst(self):
         self.status_watched = not(self.status_watched)
+        self.save()
+
+    def compare_or_update(self, new_data):
+        if self.firstAired is None:
+            self.firstAired = new_data['firstAired']
+        if self.overview is None:
+            self.overview = new_data['overview']
         self.save()

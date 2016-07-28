@@ -14,7 +14,13 @@
   </div>
 
   <div class="card">
-    <div class="card-header">Seasons</div>
+    <div class="card-header">
+      Seasons
+      <form class="form-inlne pull-xs-right" action="/update_show" method="post">{% csrf_token %}
+        <button type="submit" name="button" class="btn btn-warning btn-sm">Update</button>
+        <input type="hidden" name="show_info" value="{{show.id}}">
+      </form>
+    </div>
     <div class="list-group list-group-flush">
       {% for season in show.season_set.all %}
       <a class="list-group-item" data-toggle="modal" data-target="#s{{season.number}}">

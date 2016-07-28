@@ -3,7 +3,7 @@
 {% block content %}
 <div class="card-deck">
   <div class="card">
-    <img class="card-img-top img-fluid" src="{{show.banner}}" alt="Card image cap">
+    <img class="card-img-top img-fluid" src="/{{show.banner}}" alt="Card image cap">
     <div class="card-block">
       <a target="_blank" href="http://www.imdb.com/title/{{show.imbdID}}"><h3 class="card-title text-xs-center">{{show.seriesName}}</h4></a>
       <progress class="progress progress-striped" value="{{show.episode_watch_count}}" max="{{show.total_episodes}}"></progress>

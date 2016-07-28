@@ -1,8 +1,9 @@
 import requests
 import json
 from urllib.parse import quote
-import os
+import os,time
 from django.conf import settings
+from datetime import datetime
 
 def get_new_token():
 	apikey = 'DA10DC72930575CA'
@@ -15,9 +16,14 @@ def get_new_token():
 	return r.json()['token']
 
 def get_token():
+	modify_time = os.path.getmtime(os.path.join(settings.PROJECT_ROOT, 'token.datas'))
+	if time.time() - modify_time > 82800:
+		new_token = get_new_token()
+		with open(os.path.join(settings.PROJECT_ROOT, 'token.datas'),'w') as file:
+			file.write(new_token)
 	with open(os.path.join(settings.PROJECT_ROOT, 'token.datas')) as file:
 		token = file.read()
-	return (token[:len(token)-1])
+	return (token)
 
 def search_series_list(series_name):
 	token = get_token()

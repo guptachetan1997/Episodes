@@ -35,6 +35,13 @@ class Show(models.Model):
         self.save()
 
     @property
+    def is_watched(self):
+        season_count = Season.objects.filter(show = self).count()
+        season_watch_count = Season.objects.filter(Q(show = self),Q(status_watched = True)).count()
+        return (season_count == season_watch_count)
+
+
+    @property
     def episode_watch_count(self):
         return Episode.objects.filter(Q(season__show = self),Q(status_watched=True)).count()
 
@@ -59,15 +66,11 @@ class Season(models.Model):
 
     def wst(self):
         if self.status_watched == True:
-            for episode in self.episode_set.all():
-                episode.status_watched = False
-                episode.save()
+            self.episode_set.all().update(status_watched = False)
             self.status_watched = False
             self.save()
         else:
-            for episode in self.episode_set.all():
-                episode.status_watched = True
-                episode.save()
+            self.episode_set.all().update(status_watched = True)
             self.status_watched = True
             self.save()
 

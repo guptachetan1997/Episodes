@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from .views import (home, add_search, add ,single_show, episode_swt, season_swt, search)
 urlpatterns = [
-    url(r'^(?P<view_type>all|unwatched|watched)$', home),
+    url(r'^(?P<view_type>||all|unwatched|watched)$', home),
     url(r'^add_search', add_search),
     url(r'^add', add),
     url(r'^search', search, name='search'),

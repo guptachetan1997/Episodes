@@ -41,8 +41,8 @@ def add(request):
                     if season_episode['episodeName']:
                         episode = Episode()
                         episode.add_episode(season, season_episode)
-        return HttpResponseRedirect('/%s'%slug)
-    return HttpResponseRedirect('/')
+        return HttpResponseRedirect('/show/%s'%slug)
+    return HttpResponseRedirect('/all')
 
 
 @csrf_protect
@@ -71,8 +71,8 @@ def episode_swt(request):
         if episode:
             episode.wst()
             show = episode.season.show
-            return HttpResponseRedirect('/%s'%show.slug)
-    return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/show/%s'%show.slug)
+    return HttpResponseRedirect('/all')
 
 @csrf_protect
 def season_swt(request):
@@ -83,11 +83,11 @@ def season_swt(request):
             season.wst()
             show = season.show
             return HttpResponseRedirect('/show/%s'%show.slug)
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/all')
 
 def search(request):
     search_query = request.GET.get('query')
     show_list = Show.objects.filter(seriesName__icontains=search_query)
     if show_list and search_query:
         return render(request, 'tvshow/home.html', {'show_data':show_list})
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/all')

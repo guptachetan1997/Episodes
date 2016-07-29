@@ -7,16 +7,13 @@ from django.db.models import Q
 
 # Create your views here.
 def home(request, view_type):
+    show_data = Show.objects.all().order_by('-modified')
     if view_type == 'watched':
-        show_data = Show.objects.all()
         data = [show for show in show_data if show.is_watched]
         show_data = data
     elif view_type == 'unwatched':
-        show_data = Show.objects.all()
         data = [show for show in show_data if not show.is_watched]
         show_data = data
-    else:
-        show_data = Show.objects.all()
     return render(request, 'tvshow/home.html', {'show_data':show_data})
 
 @csrf_protect

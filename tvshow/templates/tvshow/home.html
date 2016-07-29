@@ -5,14 +5,10 @@
   <div class="card-columns">
     {% for show in show_data %}
     <div class="card">
-      <div class="card-block">
         <a href='/show/{{show.slug}}'>
-          <!-- <h3 class="card-title text-xs-center">{{show.seriesName}}</h4> -->
           <img class="card-img-top img-fluid" src="{{show.banner}}" alt="Card image cap">
         </a>
         <progress class="progress progress-striped" value="{{show.episode_watch_count}}" max="{{show.total_episodes}}"></progress>
-        <!-- <p class="card-text">{{show.overview}}</p> -->
-      </div>
     </div>
     {% endfor %}
   </div>

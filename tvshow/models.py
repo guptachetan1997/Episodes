@@ -16,6 +16,7 @@ class Show(models.Model):
     slug = models.SlugField(null = True, blank = True)
     runningStatus = models.CharField(max_length=50)
     firstAired = models.DateField(null=True, blank=True)
+    modified = models.DateTimeField(null=True, blank=True, auto_now=True, auto_now_add=False)
 
     def __str__(self):
         return self.seriesName
@@ -96,6 +97,7 @@ class Season(models.Model):
         self.save()
 
     def wst(self):
+        self.show.save()
         if self.status_watched == True:
             self.episode_set.all().update(status_watched = False)
             self.status_watched = False
@@ -107,18 +109,18 @@ class Season(models.Model):
 
     @property
     def watch_count(self):
-        return Episode.objects.filter(Q(season=self),Q(status_watched=True)).count()
+        return Episode.objects.filter(Q(season=self),Q(status_watched=True),Q(firstAired__lt=datetime.now())).count()
 
     @property
     def episode_count(self):
-        return Episode.objects.filter(season=self).count()
+        return Episode.objects.filter(Q(season=self), Q(firstAired__lt=datetime.now())).count()
 
 class Episode(models.Model):
     season = models.ForeignKey(Season, on_delete=models.CASCADE)
     episodeName = models.CharField(max_length=50)
     number = models.IntegerField()
     firstAired = models.DateField(null=True, blank = True)
-    date_watched = models.DateField(null=True, blank=True)
+    date_watched = models.DateField(null=True, blank=True, auto_now=True, auto_now_add=False)
     tvdbID = models.CharField(max_length=50)
     overview = models.TextField(null=True, blank=True)
     status_watched = models.BooleanField(default=False)
@@ -146,6 +148,7 @@ class Episode(models.Model):
     def wst(self):
         self.status_watched = not(self.status_watched)
         self.save()
+        self.season.show.save()
         if self.season.watch_count == self.season.episode_count:
             self.season.status_watched = True
             self.season.save()

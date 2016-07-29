@@ -14,21 +14,26 @@
 
 <body>
 	<nav class="navbar navbar-full navbar-dark bg-primary">
+		<button class="pull-xs-right navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar2" aria-controls="exCollapsingNavbar2" aria-expanded="false" aria-label="Toggle navigation">
+			&#9776;
+		</button>
 		<a class="navbar-brand" href="/all">Episodes</a>
-		<ul class="nav navbar-nav">
-			<li class="nav-item">
-				<a class="nav-link" href="/unwatched">UnWatched</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="/watched">Watched</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="/add_search">Add</a>
-			</ul>
-			<form class="form-inline pull-xs-right" action="{% url 'tvshow:search' %}">
-				<input class="form-control" name='query' type="text" placeholder="Search">
-				<button class="btn btn-success" type="submit">Search</button>
-			</form>
+		<div class="collapse navbar-toggleable-xs" id="exCollapsingNavbar2">
+			<ul class="nav navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link" href="/unwatched">UnWatched</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/watched">Watched</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/add_search">Add</a>
+				</ul>
+				<form class="form-inline pull-xs-right" action="{% url 'tvshow:search' %}">
+					<input class="form-control" name='query' type="text" placeholder="Search">
+					<button class="btn btn-success" type="submit">Search</button>
+				</form>
+			</div>
 		</nav>
 		<br>
 		{% block content %}

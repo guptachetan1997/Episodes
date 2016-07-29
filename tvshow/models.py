@@ -36,9 +36,13 @@ class Show(models.Model):
 
     @property
     def is_watched(self):
-        season_count = Season.objects.filter(show = self).count()
-        season_watch_count = Season.objects.filter(Q(show = self),Q(status_watched = True)).count()
-        return (season_count == season_watch_count)
+        flag = True
+        season_count = Season.objects.filter(show = self)
+        for season in season_count:
+            if season.status_watched is False and season.episode_count is not 0:
+                flag=False
+                break
+        return flag
 
 
     @property
@@ -142,10 +146,17 @@ class Episode(models.Model):
     def wst(self):
         self.status_watched = not(self.status_watched)
         self.save()
+        if self.season.watch_count == self.season.episode_count:
+            self.season.status_watched = True
+            self.season.save()
+        else:
+            self.season.status_watched = False
+            self.season.save()
 
     def compare_or_update(self, new_data):
         if self.firstAired is None:
             self.firstAired = new_data['firstAired']
+            self.save()
         if self.overview is None:
             self.overview = new_data['overview']
-        self.save()
+            self.save()

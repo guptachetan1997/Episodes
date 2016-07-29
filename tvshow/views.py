@@ -98,6 +98,7 @@ def season_swt(request):
 def search(request):
     search_query = request.GET.get('query')
     show_list = Show.objects.filter(seriesName__icontains=search_query)
-    if show_list and search_query:
-        return render(request, 'tvshow/home.html', {'show_data':show_list})
+    episode_list = Episode.objects.filter(Q(episodeName__icontains=search_query)|Q(overview__icontains=search_query))[:10]
+    if (show_list or episode_list) and search_query:
+        return render(request, 'tvshow/search_page.html', {'show_data':show_list, 'episode_list':episode_list})
     return HttpResponseRedirect('/all')

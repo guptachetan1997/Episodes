@@ -32,22 +32,26 @@ def add(request):
         slug = ''
         tvdbID = request.POST.get('show_id')
         runningStatus = request.POST.get('runningStatus')
-        show_data = get_series_with_id(int(tvdbID))
-        if show_data is not None:
-            show = Show()
-            show.add_show(show_data, runningStatus)
+        try :
+            show = Show.objects.get(tvdbID=tvdbID)
             slug = show.slug
-            seasons_data = get_all_episodes(int(tvdbID), 1)
-            for i in range(len(seasons_data)):
-                string = 'Season' + str(i+1)
-                season_data = seasons_data[string]
-                season = Season()
-                season.add_season(show, i+1)
-                season_episodes_data = seasons_data[string]
-                for season_episode in season_episodes_data:
-                    if season_episode['episodeName']:
-                        episode = Episode()
-                        episode.add_episode(season, season_episode)
+        except Show.DoesNotExist as e:
+            show_data = get_series_with_id(int(tvdbID))
+            if show_data is not None:
+                show = Show()
+                show.add_show(show_data, runningStatus)
+                slug = show.slug
+                seasons_data = get_all_episodes(int(tvdbID), 1)
+                for i in range(len(seasons_data)):
+                    string = 'Season' + str(i+1)
+                    season_data = seasons_data[string]
+                    season = Season()
+                    season.add_season(show, i+1)
+                    season_episodes_data = seasons_data[string]
+                    for season_episode in season_episodes_data:
+                        if season_episode['episodeName']:
+                            episode = Episode()
+                            episode.add_episode(season, season_episode)
         return HttpResponseRedirect('/show/%s'%slug)
     return HttpResponseRedirect('/all')
 

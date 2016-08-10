@@ -25,7 +25,7 @@ class Show(models.Model):
         self.seriesName = data['seriesName']
         self.slug = slugify(self.seriesName)
         self.overview = data['overview']
-        self.banner = download_image('http://thetvdb.com/banners/' + data['banner'], self.slug)
+        self.banner = 'http://thetvdb.com/banners/' + data['banner']
         self.imbdID = data['imdbID']
         self.tvdbID = data['tvdbID']
         self.runningStatus = runningStatus

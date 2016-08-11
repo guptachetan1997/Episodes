@@ -1,0 +1,27 @@
+{% extends 'tvshow/header.html' %}
+
+{% block content %}
+<h1 class="display-4 text-xs-center">You Might Like!!</h1>
+<div class="card-columns">
+  {% for show in predicted_shows %}
+  <div class="card">
+    <img class="card-img-top img-fluid" src="http://thetvdb.com/banners/{{show.banner}}" alt="Card image cap">
+    <div class="card-block">
+      <h4 class="card-title">{{show.seriesName}}</h4>
+      <p class="card-text">{{show.overview}}</p>
+	  {% for genre in show.genre %}
+        <span class="tag tag-pill tag-danger text-xs-center">{{genre}}</span>
+      {% endfor %}
+      <p class="card-text"><small class="text-muted">First aired {{show.firstAired}}</small></p>
+    </div>
+    <div class="card-block">
+      <form class='form-inline' action="/add" method="post">{% csrf_token %}
+        <button type="submit" class="btn btn-danger-outline">Add</button>
+        <input type="hidden" name="show_id" value="{{show.id}}">
+        <input type="hidden" name="runningStatus" value="{{show.status}}">
+      </form>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

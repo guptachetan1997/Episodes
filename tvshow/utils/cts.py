@@ -1,5 +1,6 @@
 from tvshow.models import Show
 import pandas as pd
+import os
 
 cols = [
 'SeriesName',
@@ -38,8 +39,9 @@ genres = [
 'Travel',
 'Western',
 ]
+module_dir = os.path.dirname(__file__)
 
-def main():
+def build_training_set():
 	show_data = Show.objects.all()
 
 	tv_df = pd.DataFrame(columns=cols+genres)
@@ -50,7 +52,8 @@ def main():
 		length = len(show_genre)
 		for genre in show_genre:
 			show_genre_list[genres.index(genre)] = 1.0/length
-		show_datas = [show.seriesName, show.tvdbID , show.network, show.siteRating, (float(show.siteRating)**2)*show.userRating]
+		show_datas = [show.seriesName, show.tvdbID , show.network, int(show.userRating), (float(show.siteRating)**2)*float(show.userRating)]
 		tv_df = tv_df.append(pd.DataFrame([show_datas+show_genre_list], columns=cols+genres))
-
-	print(tv_df)
+	extended_tv_df = pd.read_csv(os.path.join(module_dir, 'extra_train_data.csv'))
+	extended_tv_df = extended_tv_df.append(tv_df)
+	return extended_tv_df

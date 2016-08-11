@@ -27,6 +27,18 @@ def update_show(request):
     return HttpResponseRedirect('/')
 
 @csrf_protect
+def update_show_rating(request):
+    if request.method == 'POST':
+        show_id = request.POST.get('show_id')
+        show = Show.objects.get(id=show_id)
+        if show:
+            new_rating = request.POST.get('new_rating')
+            show.userRating = new_rating
+            show.save()
+            return HttpResponseRedirect('/show/%s'%show.slug)
+    return HttpResponseRedirect('/')
+
+@csrf_protect
 def add(request):
     if request.method == 'POST':
         slug = ''

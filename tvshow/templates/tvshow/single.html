@@ -4,9 +4,18 @@
 <div class="card-deck">
   <div class="card">
     <img class="card-img-top img-fluid" src="{{show.banner}}" alt="Card image cap">
-    <div class="card-block">
-      <a target="_blank" href="http://www.imdb.com/title/{{show.imbdID}}"><h3 class="card-title text-xs-center">{{show.seriesName}}</h4></a>
-      <progress class="progress progress-striped" value="{{show.episode_watch_count}}" max="{{show.total_episodes}}"></progress>
+    <div class="card-block text-xs-center">
+      <a target="_blank" href="http://www.imdb.com/title/{{show.imbdID}}"><h3 class="card-title text-xs-center">{{show.seriesName}}<small class="text-muted"> ({{show.network}})</small></h3></a>
+      {% for genre in show.get_genres %}
+        <span class="tag tag-pill tag-danger text-xs-center">{{genre}}</span>
+      {% endfor %}
+      <br>
+      <br>
+      {% if show.is_watched %}
+        <progress class="progress progress-striped progress-success" value="{{show.episode_watch_count}}" max="{{show.total_episodes}}"></progress>
+      {% else %}
+        <progress class="progress progress-striped" value="{{show.episode_watch_count}}" max="{{show.total_episodes}}"></progress>
+      {% endif %}
       <p class="card-text">
         {{show.overview}}
       </p>
@@ -54,6 +63,36 @@
       </div>
     </ul>
     {% endif %}
+    <br>
+    <div class="card-block text-xs-center">
+      <button class="btn btn-danger">Site Rating : {{show.siteRating|floatformat:"1"}}</button>
+      <br>
+      <br>
+      <button class="btn btn-success" data-toggle="modal" data-target=".change-user-rating">Your Rating : {{show.userRating|floatformat:"1"}}</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade change-user-rating" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content text-xs-center">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Modify Rating</h4>
+      </div>
+      <form action="/update_rating" method="post">{% csrf_token %}
+      <div class="modal-body">
+        <div class="input-group">
+          <span class="input-group-addon" id="basic-addon3">Rating</span>
+          <input type="number" class="form-control" name="new_rating" aria-describedby="basic-addon3" max=10 value="{{show.userRating|floatformat:'0'}}">
+          <input type="hidden" value={{show.id}} name='show_id'>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success">Save changes</button>
+      </div>
+      </form>
+    </div>
   </div>
 </div>
 

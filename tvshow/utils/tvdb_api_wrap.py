@@ -55,6 +55,9 @@ def get_series_with_id(tvdbID):
 		show_info['firstAired'] = json_r['firstAired']
 		show_info['overview'] = json_r['overview']
 		show_info['imdbID'] = json_r['imdbId']
+		show_info['genre'] = json_r['genre']
+		show_info['siteRating'] = json_r['siteRating']
+		show_info['network'] = json_r['network']
 		return show_info
 	except:
 		return None

@@ -17,7 +17,7 @@ user_agents = [
 	'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0'
 ]
 
-popular_networks = ['CBS', 'USA Network', 'AMC' , 'ABC (US)', 'Netflix', 'HBO', 'FOX', 'NBC', 'FX']
+popular_networks = ['CBS', 'USA Network', 'AMC' , 'ABC (US)', 'Netflix', 'HBO', 'FOX', 'NBC', 'FX', 'BBC']
 
 cols = [
 'SeriesName',

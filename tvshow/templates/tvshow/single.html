@@ -83,7 +83,7 @@
       <div class="modal-body">
         <div class="input-group">
           <span class="input-group-addon" id="basic-addon3">Rating</span>
-          <input type="number" class="form-control" name="new_rating" aria-describedby="basic-addon3" max=10 value="{{show.userRating|floatformat:'0'}}">
+          <input type="number" class="form-control" name="new_rating" aria-describedby="basic-addon3" max=10 min=0 step=0.1 value="{{show.userRating|floatformat:'0'}}">
           <input type="hidden" value={{show.id}} name='show_id'>
       </div>
       </div>

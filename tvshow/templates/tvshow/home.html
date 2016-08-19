@@ -6,7 +6,7 @@
     {% for show in show_data %}
     <div class="card">
         <a href='/show/{{show.slug}}'>
-          <img class="card-img-top img-fluid" src="{{show.banner}}" alt="Card image cap">
+          <img class="card-img-top img-fluid" src="{{show.banner}}" alt="{{show.seriesName}}">
         </a>
         {% if show.is_watched %}
           <progress class="progress progress-striped progress-success" value="{{show.episode_watch_count}}" max="{{show.total_episodes}}"></progress>

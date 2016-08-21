@@ -2,10 +2,8 @@
   <div class="modal-dialog" rolepytho="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
         <form class="form-inline" action="/season_swt" method="post">{% csrf_token %}
+          <button type="button" class="btn btn-sm btn-secondary pull-xs-right" data-dismiss="modal">Close</button>
           <h4 class="modal-title pull-xs-left" id="myModalLabel">Season {{season.number}}</h4>
           <input type="hidden" name="season_swt" value="{{season.id}}">
           {% if season.status_watched == True %}

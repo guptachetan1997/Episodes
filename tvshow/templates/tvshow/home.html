@@ -2,19 +2,41 @@
 
 {% block content %}
 <div class="container-fluid col-xs-12">
-  <div class="card-columns">
-    {% for show in show_data %}
-    <div class="card">
-        <a href='/show/{{show.slug}}'>
-          <img class="card-img-top img-fluid" src="{{show.banner}}" alt="{{show.seriesName}}">
-        </a>
-        {% if show.is_watched %}
-          <progress class="progress progress-striped progress-success" value="{{show.episode_watch_count}}" max="{{show.total_episodes}}"></progress>
-        {% else %}
-          <progress class="progress progress-striped" value="{{show.episode_watch_count}}" max="{{show.total_episodes}}"></progress>
-        {% endif %}
+<div class="card-columns">
+  {% for show in show_data %}
+  <div class="card">
+      <a href='/show/{{show.slug}}'>
+        <img class="card-img-top img-fluid" src="{{show.banner}}" alt="{{show.seriesName}}">
+      </a>
+      {% if show.is_watched %}
+        <progress class="progress progress-striped progress-success" value="{{show.episode_watch_count}}" max="{{show.total_episodes}}"></progress>
+      {% else %}
+        <progress class="progress progress-striped" value="{{show.episode_watch_count}}" max="{{show.total_episodes}}"></progress>
+      {% endif %}
+  </div>
+  {% endfor %}
+</div>
+</div>
+
+{% if messages %}
+<div class="modal fade" id="messages" tabindex="-1" role="dialog" aria-labelledby="messagesLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="modal-title text-xs-center" id="myModalLabel">Updates</h4>
     </div>
-    {% endfor %}
+    <div class="modal-body">
+        {% for message in messages %}
+        <div class="alert alert-success" role="alert">
+          {{message}}
+        </div>
+        {% endfor %}
+    </div>
   </div>
 </div>
+</div>
+{% endif %}
 {% endblock %}

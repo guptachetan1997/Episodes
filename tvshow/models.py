@@ -128,11 +128,11 @@ class Season(models.Model):
 
 	@property
 	def watch_count(self):
-		return Episode.objects.filter(Q(season=self),Q(status_watched=True),Q(firstAired__lt=datetime.now())).count()
+		return Episode.objects.filter(Q(season=self),Q(status_watched=True),Q(firstAired__lte=datetime.now())).count()
 
 	@property
 	def episode_count(self):
-		return Episode.objects.filter(Q(season=self), Q(firstAired__lt=datetime.now())).count()
+		return Episode.objects.filter(Q(season=self), Q(firstAired__lte=datetime.now())).count()
 
 	@property
 	def status_watched_check(self):

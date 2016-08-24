@@ -3,6 +3,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import scale
 from .cts import build_training_set
 import os
+from random import shuffle
 
 module_dir = os.path.dirname(__file__)
 
@@ -33,4 +34,7 @@ def get_recommendations():
 	new_df['indicator'] = (target_df.iloc[:, 4]/target_df.iloc[:, 3])*new_df['PredictedRating']
 
 	new_df = new_df.sort_values(['indicator'], ascending=False)
-	return list(new_df.iloc[:, 1].head(n=9))
+	initial_list = list(new_df.iloc[:4, 1])
+	latter_list =  list(new_df.iloc[5:15, 1])
+	shuffle(latter_list)
+	return list(initial_list + latter_list[:5])

@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.contrib import messages
 from datetime import timedelta
 from django.utils import timezone
+from random import shuffle
 
 # Create your views here.
 def home(request, view_type):
@@ -118,6 +119,7 @@ def recommended(request):
     predicted_shows = []
     for prediction in predictions:
         predicted_shows.append(get_series_with_id(prediction))
+    shuffle(predicted_shows)
     return render(request, 'tvshow/recommended.html', {'predicted_shows':predicted_shows})
 
 def search(request):

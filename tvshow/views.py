@@ -5,6 +5,10 @@ from .utils.tvdb_api_wrap import search_series_list, get_series_with_id, get_all
 from .utils.recommender import get_recommendations
 from .models import Show,Season,Episode
 from django.db.models import Q
+from django.contrib import messages
+from datetime import timedelta
+from django.utils import timezone
+from random import shuffle
 
 # Create your views here.
 def home(request, view_type):
@@ -23,6 +27,8 @@ def update_show(request):
         show = Show.objects.get(id=show_id)
         if show:
             show.update_show_data()
+            show.last_updated = timezone.now()
+            show.save()
             return HttpResponseRedirect('/show/%s'%show.slug)
     return HttpResponseRedirect('/')
 
@@ -113,6 +119,7 @@ def recommended(request):
     predicted_shows = []
     for prediction in predictions:
         predicted_shows.append(get_series_with_id(prediction))
+    shuffle(predicted_shows)
     return render(request, 'tvshow/recommended.html', {'predicted_shows':predicted_shows})
 
 def search(request):
@@ -122,3 +129,13 @@ def search(request):
     if (show_list or episode_list) and search_query:
         return render(request, 'tvshow/search_page.html', {'show_data':show_list, 'episode_list':episode_list})
     return HttpResponseRedirect('/all')
+
+def update_all_continuing(request):
+    show_list = Show.objects.filter(Q(runningStatus='Continuing'),Q(last_updated__gt=timezone.now()+timedelta(days=7)))
+    for show in show_list:
+        flag = show.update_show_data()
+        show.last_updated = timezone.now()
+        show.save()
+        if flag:
+            messages.success(request, '%s has been updated.'%show.seriesName)
+    return HttpResponseRedirect('/')

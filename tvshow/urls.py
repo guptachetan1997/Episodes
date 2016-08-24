@@ -1,7 +1,8 @@
 from django.conf.urls import url
-from .views import (home, add_search, add ,single_show, episode_swt, season_swt, search, update_show, update_show_rating, recommended)
+from .views import (home, add_search, add ,single_show, episode_swt, season_swt, search, update_show, update_show_rating, recommended, update_all_continuing)
 urlpatterns = [
     url(r'^(?P<view_type>|all||)$', home),
+    url(r'^update_all_shows', update_all_continuing),
     url(r'^update_show', update_show),
     url(r'^update_rating', update_show_rating),
     url(r'^recommended', recommended),

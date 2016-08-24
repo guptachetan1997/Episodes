@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+from django.utils import timezone
 from django.utils.text import slugify
 from django.db.models import Q
 import json
@@ -22,6 +23,7 @@ class Show(models.Model):
 	userRating = models.DecimalField(max_digits=5, null=True, decimal_places=3 , blank=True, default=0)
 	network = models.CharField(max_length=50)
 	genre_list = models.TextField(null=True, blank=True)
+	last_updated = models.DateTimeField(null=True, blank=True)
 
 	def __str__(self):
 		return self.seriesName
@@ -37,6 +39,7 @@ class Show(models.Model):
 		self.network = data['network']
 		self.runningStatus = runningStatus
 		self.genre_list = json.dumps(data['genre'])
+		self.last_updated = timezone.now()
 		try:
 			self.firstAired = datetime.strptime(data['firstAired'], '%Y-%m-%d').date()
 		except:
@@ -60,12 +63,13 @@ class Show(models.Model):
 	@property
 	def total_episodes(self):
 		return Episode.objects.filter(season__show = self).count()
-	
+
 	@property
 	def get_genres(self):
 		return json.loads(self.genre_list)
 
 	def update_show_data(self):
+		flag = False
 		tvdbID = self.tvdbID
 		current_season = self.season_set.all().last()
 		current_season_db_data = current_season.episode_set.all()
@@ -76,9 +80,11 @@ class Show(models.Model):
 			counter+=1
 		if counter < len(current_season_oln_data):
 			for new_episode in current_season_oln_data[counter:]:
-				if new_episode['episodeName']:
-					episode = Episode()
-					episode.add_episode(current_season,new_episode)
+				if new_episode['episodeName'] is "":
+					new_episode['episodeName'] = 'TBA'
+				episode = Episode()
+				episode.add_episode(current_season,new_episode)
+				flag=True
 		range_starter = current_season.number + 1
 		new_seasons = get_all_episodes(tvdbID, range_starter)
 		for i in range(len(new_seasons)):
@@ -87,10 +93,12 @@ class Show(models.Model):
 			season = Season()
 			season.add_season(self, i+range_starter)
 			season_episodes_data = new_seasons[string]
+			flag=True
 			for season_episode in season_episodes_data:
 				if season_episode['episodeName']:
 					episode = Episode()
 					episode.add_episode(season, season_episode)
+		return flag
 
 class Season(models.Model):
 	show = models.ForeignKey(Show, on_delete=models.CASCADE)
@@ -120,12 +128,12 @@ class Season(models.Model):
 
 	@property
 	def watch_count(self):
-		return Episode.objects.filter(Q(season=self),Q(status_watched=True),Q(firstAired__lt=datetime.now())).count()
+		return Episode.objects.filter(Q(season=self),Q(status_watched=True),Q(firstAired__lte=datetime.now())).count()
 
 	@property
 	def episode_count(self):
-		return Episode.objects.filter(Q(season=self), Q(firstAired__lt=datetime.now())).count()
-	
+		return Episode.objects.filter(Q(season=self), Q(firstAired__lte=datetime.now())).count()
+
 	@property
 	def status_watched_check(self):
 		flag = self.watch_count == self.episode_count
@@ -136,7 +144,7 @@ class Season(models.Model):
 
 class Episode(models.Model):
 	season = models.ForeignKey(Season, on_delete=models.CASCADE)
-	episodeName = models.CharField(max_length=50)
+	episodeName = models.CharField(max_length=50, blank=True, null=True)
 	number = models.IntegerField()
 	firstAired = models.DateField(null=True, blank = True)
 	date_watched = models.DateField(null=True, blank=True, auto_now=True, auto_now_add=False)
@@ -176,9 +184,14 @@ class Episode(models.Model):
 			self.season.save()
 
 	def compare_or_update(self, new_data):
-		if self.firstAired is None:
-			self.firstAired = new_data['firstAired']
-			self.save()
+		self.episodeName = new_data['episodeName']
+		self.save()
+		if self.firstAired is None and new_data['firstAired'] is not "":
+			try:
+				self.firstAired = new_data['firstAired']
+				self.save()
+			except:
+				pass
 		if self.overview is None:
 			self.overview = new_data['overview']
 			self.save()

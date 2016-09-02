@@ -68,6 +68,10 @@ class Show(models.Model):
 	def get_genres(self):
 		return json.loads(self.genre_list)
 
+	@property
+	def next_episode(self):
+		return Episode.objects.filter(Q(season__show=self),Q(status_watched=False)).first()
+
 	def update_show_data(self):
 		flag = False
 		tvdbID = self.tvdbID

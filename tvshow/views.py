@@ -14,11 +14,13 @@ from random import shuffle
 def home(request, view_type):
     if view_type == 'all':
         show_data = Show.objects.all().order_by('-modified')
+        flag = False
     else:
         show_data = Show.objects.all().order_by('-modified')
         data = [show for show in show_data if not show.is_watched]
         show_data = data
-    return render(request, 'tvshow/home.html', {'show_data':show_data})
+        flag = True
+    return render(request, 'tvshow/home.html', {'show_data':show_data, 'flag':flag})
 
 @csrf_protect
 def update_show(request):
@@ -89,7 +91,7 @@ def add_search(request):
 @csrf_protect
 def single_show(request, show_slug):
     show = Show.objects.get(slug__iexact = show_slug)
-    next_episode = Episode.objects.filter(Q(season__show=show),Q(status_watched=False)).first()
+    next_episode = show.next_episode
     return render(request, 'tvshow/single.html', {'show':show, 'next_episode':next_episode})
 
 @csrf_protect

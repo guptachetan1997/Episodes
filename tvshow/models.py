@@ -68,6 +68,10 @@ class Show(models.Model):
 	def get_genres(self):
 		return json.loads(self.genre_list)
 
+	@property
+	def next_episode(self):
+		return Episode.objects.filter(Q(season__show=self),Q(status_watched=False)).first()
+
 	def update_show_data(self):
 		flag = False
 		tvdbID = self.tvdbID
@@ -186,7 +190,7 @@ class Episode(models.Model):
 	def compare_or_update(self, new_data):
 		self.episodeName = new_data['episodeName']
 		self.save()
-		if self.firstAired is None and new_data['firstAired'] is not "":
+		if new_data['firstAired'] is not "":
 			try:
 				self.firstAired = new_data['firstAired']
 				self.save()

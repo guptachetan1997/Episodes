@@ -5,6 +5,11 @@
 <div class="card-columns">
   {% for show in show_data %}
   <div class="card">
+      {% if flag %}
+      <div class="card-header">
+        <p class="card-text text-xs-center">{{show.next_episode.season.number}}.{{show.next_episode.number}} <small>{{show.next_episode.episodeName}}</small></p>
+      </div>
+      {% endif %}
       <a href='/show/{{show.slug}}'>
         <img class="card-img-top img-fluid" src="{{show.banner}}" alt="{{show.seriesName}}">
       </a>

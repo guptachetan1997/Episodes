@@ -190,7 +190,7 @@ class Episode(models.Model):
 	def compare_or_update(self, new_data):
 		self.episodeName = new_data['episodeName']
 		self.save()
-		if self.firstAired is None and new_data['firstAired'] is not "":
+		if new_data['firstAired'] is not "":
 			try:
 				self.firstAired = new_data['firstAired']
 				self.save()

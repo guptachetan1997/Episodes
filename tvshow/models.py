@@ -79,16 +79,17 @@ class Show(models.Model):
 		current_season_db_data = current_season.episode_set.all()
 		current_season_oln_data = get_season_episode_list(tvdbID, current_season.number)
 		counter = 0
-		for db_episode,oln_episode in zip(current_season_db_data, current_season_oln_data):
-			db_episode.compare_or_update(oln_episode)
-			counter+=1
-		if counter < len(current_season_oln_data):
-			for new_episode in current_season_oln_data[counter:]:
-				if new_episode['episodeName'] is "":
-					new_episode['episodeName'] = 'TBA'
-				episode = Episode()
-				episode.add_episode(current_season,new_episode)
-				flag=True
+		if current_season_oln_data:
+			for db_episode,oln_episode in zip(current_season_db_data, current_season_oln_data):
+				db_episode.compare_or_update(oln_episode)
+				counter+=1
+			if counter < len(current_season_oln_data):
+				for new_episode in current_season_oln_data[counter:]:
+					if new_episode['episodeName'] is "":
+						new_episode['episodeName'] = 'TBA'
+					episode = Episode()
+					episode.add_episode(current_season,new_episode)
+					flag=True
 		range_starter = current_season.number + 1
 		new_seasons = get_all_episodes(tvdbID, range_starter)
 		for i in range(len(new_seasons)):

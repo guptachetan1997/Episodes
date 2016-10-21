@@ -19,6 +19,7 @@
       <p class="card-text">
         {{show.overview}}
       </p>
+      <button class="btn btn-danger" data-toggle="modal" data-target=".delete-show">Delete</button>
     </div>
   </div>
 
@@ -92,6 +93,29 @@
         <button type="submit" class="btn btn-success">Save changes</button>
       </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade delete-show" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content text-xs-center">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">All data will be deleted!!</h4>
+        </div>
+        <form action="/delete_show" method="post">{% csrf_token %}
+        <div class="modal-body">
+            <p>
+              {{show.seriesName}} and all its episodes will be deleted.
+            </p>
+            <input type="hidden" value={{show.id}} name='show_id'>
+        </div>
+      <div class="modal-footer text-xs-center">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </div>
+      </form>
+    </div>
     </div>
   </div>
 </div>

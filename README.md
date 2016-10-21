@@ -26,3 +26,6 @@ To use clone the production branch, install requirements, run the following term
 <br/>
 <br/>
 ![alt tag](https://github.com/guptachetan1997/Episodes/blob/master/3.jpeg)
+<br/>
+<br/>
+![alt tag](https://github.com/guptachetan1997/Episodes/blob/master/4.jpeg)

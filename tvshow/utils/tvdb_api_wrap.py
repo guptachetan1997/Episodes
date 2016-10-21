@@ -23,7 +23,10 @@ def get_new_token():
 def get_token():
 	modify_time = os.path.getmtime(os.path.join(settings.PROJECT_ROOT, 'token.datas'))
 	if time.time() - modify_time > 82800:
-		new_token = get_new_token()
+		try :
+			new_token = get_new_token()
+		except:
+			print('API MUST BE DOWN')
 		with open(os.path.join(settings.PROJECT_ROOT, 'token.datas'),'w') as file:
 			file.write(new_token)
 	with open(os.path.join(settings.PROJECT_ROOT, 'token.datas')) as file:
@@ -34,8 +37,8 @@ def search_series_list(series_name):
 	token = get_token()
 	headers={"Content-Type":"application/json","Accept": "application/json",'Authorization' : 'Bearer '+token, "User-agent": "Mozilla/5.0"}
 	url = 'https://api.thetvdb.com/search/series?name=' + quote(series_name)
-	json_r = requests.get(url, headers=headers).json()
 	try:
+		json_r = requests.get(url, headers=headers).json()
 		return json_r['data'][:5]
 	except:
 		return None
@@ -44,8 +47,8 @@ def get_series_with_id(tvdbID):
 	token = get_token()
 	headers={"Content-Type":"application/json","Accept": "application/json",'Authorization' : 'Bearer '+token, "User-agent": "Mozilla/5.0"}
 	url = 'https://api.thetvdb.com/series/' + str(tvdbID)
-	json_r = requests.get(url, headers=headers).json()
 	try:
+		json_r = requests.get(url, headers=headers).json()
 		json_r = json_r['data']
 		show_info = {}
 		show_info['tvdbID'] = tvdbID
@@ -66,8 +69,8 @@ def get_season_episode_list(tvdbID, number):
 	token = get_token()
 	headers={"Content-Type":"application/json","Accept": "application/json",'Authorization' : 'Bearer '+token, "User-agent": "Mozilla/5.0"}
 	url = 'https://api.thetvdb.com/series/' + str(tvdbID) + '/episodes/query?airedSeason=' + str(number)
-	json_r = requests.get(url, headers=headers).json()
 	try:
+		json_r = requests.get(url, headers=headers).json()
 		season_data = []
 		json_r = json_r['data']
 		for episode in json_r:

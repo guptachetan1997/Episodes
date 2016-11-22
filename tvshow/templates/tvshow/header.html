@@ -10,14 +10,12 @@
 	{% endblock %}
 	<title>Episodes</title>
 	<!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="sha384-2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
 </head>
 
 <body>
-	<nav class="navbar navbar-full navbar-dark bg-primary">
-		<button class="pull-xs-right navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar2" aria-controls="exCollapsingNavbar2" aria-expanded="false" aria-label="Toggle navigation">
-			&#9776;
-		</button>
+	<nav class="navbar navbar-fixed-top navbar-dark bg-primary">
+		<button class="float-xs-right navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar2" aria-controls="exCollapsingNavbar2" aria-expanded="false" aria-label="Toggle navigation"></button>
 		<a class="navbar-brand" href="/">Episodes</a>
 		<div class="collapse navbar-toggleable-xs" id="exCollapsingNavbar2">
 			<ul class="nav navbar-nav">
@@ -34,19 +32,21 @@
 					<a class="nav-link" href="/recommended">Recommendations</a>
 				</li>
 				</ul>
-				<form class="form-inline pull-xs-right" action="{% url 'tvshow:search' %}">
+				<form class="form-inline float-xs-right" action="{% url 'tvshow:search' %}">
 					<input class="form-control" name='query' type="text" placeholder="Search">
 					<button class="btn btn-success" type="submit">Search</button>
 				</form>
 			</div>
 		</nav>
 		<br>
+		<br>
+		<br>
 		{% block content %}
 		{% endblock %}
 		<!-- jQuery first, then Tether, then Bootstrap JS. -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js" integrity="sha384-THPy051/pYDQGanwU6poAc/hOdQxjnOEXzbT+OuUAFqNqFjL+4IGLBgCJC3ZOShY" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js" integrity="sha384-Plbmg8JY28KFelvJVai01l8WyZzrYWG825m+cZ0eDDS1f7d/js6ikvy1+X+guPIB" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/js/bootstrap.min.js" integrity="sha384-VjEeINv9OSwtWFLAtmc4JCtEJXXBub00gtSnszmspDLCtC0I4z4nqz7rEFbIZLLU" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
 		<script type="text/javascript">
 		$(document).ready(function () {
 			$('#messages').modal('show');

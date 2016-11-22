@@ -19,13 +19,14 @@
       <p class="card-text">
         {{show.overview}}
       </p>
+      <button class="btn btn-danger" data-toggle="modal" data-target=".delete-show">Delete</button>
     </div>
   </div>
 
   <div class="card">
     <div class="card-header">
       Seasons
-      <form class="form-inlne pull-xs-right" action="/update_show" method="post">{% csrf_token %}
+      <form class="form-inlne float-xs-right" action="/update_show" method="post">{% csrf_token %}
         <button type="submit" name="button" class="btn btn-warning btn-sm">Update</button>
         <input type="hidden" name="show_info" value="{{show.id}}">
       </form>
@@ -45,7 +46,7 @@
       <li class="list-group-item list-group-item-success">Next to Watch</li>
       <li class="list-group-item">
         {{next_episode.number}}. <a data-toggle="collapse" href="#collapseE{{next_episode.number}}" aria-expanded="false" aria-controls="collapseE{{next_episode.number}}">{{next_episode.episodeName}}</a> <small>{{next_episode.firstAired}}</small>
-        <form class='form-inline pull-xs-right' action="/episode_swt" method="post">{% csrf_token %}
+        <form class='form-inline float-xs-right' action="/episode_swt" method="post">{% csrf_token %}
           <input type="hidden" name="episode_swt" value="{{next_episode.id}}">
           {% if next_episode.status_watched == True %}
           <input type="checkbox" onclick="this.form.submit();" checked>
@@ -92,6 +93,29 @@
         <button type="submit" class="btn btn-success">Save changes</button>
       </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade delete-show" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content text-xs-center">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">All data will be deleted!!</h4>
+        </div>
+        <form action="/delete_show" method="post">{% csrf_token %}
+        <div class="modal-body">
+            <p>
+              {{show.seriesName}} and all its episodes will be deleted.
+            </p>
+            <input type="hidden" value={{show.id}} name='show_id'>
+        </div>
+      <div class="modal-footer text-xs-center">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </div>
+      </form>
+    </div>
     </div>
   </div>
 </div>

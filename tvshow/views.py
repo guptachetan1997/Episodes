@@ -134,11 +134,23 @@ def search(request):
 
 def update_all_continuing(request):
     show_list = Show.objects.filter(Q(runningStatus='Continuing'),Q(last_updated__lte=timezone.now()-timedelta(days=7)))
-    print(show_list)
     for show in show_list:
         flag = show.update_show_data()
         show.last_updated = timezone.now()
         show.save()
         if flag:
             messages.success(request, '%s has been updated.'%show.seriesName)
+    return HttpResponseRedirect('/')
+
+@csrf_protect
+def delete_show(request):
+    if request.method == 'POST':
+        show_id = request.POST.get('show_id')
+        if show_id:
+            try:
+                show = Show.objects.get(id=show_id)
+                show.delete()
+                return HttpResponseRedirect('/')
+            except:
+                return HttpResponseRedirect('/')
     return HttpResponseRedirect('/')

@@ -117,7 +117,10 @@ def season_swt(request):
     return HttpResponseRedirect('/all')
 
 def recommended(request):
-    predictions = get_recommendations()
+    try:
+        predictions = get_recommendations()
+    except:
+        predictions = []
     predicted_shows = []
     for prediction in predictions:
         predicted_shows.append(get_series_with_id(prediction))

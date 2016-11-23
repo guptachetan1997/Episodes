@@ -57,4 +57,4 @@ def build_training_set():
 		extended_tv_df = extended_tv_df.append(tv_df)
 		return extended_tv_df
 	except:
-		return tv_df
+		return None

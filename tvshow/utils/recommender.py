@@ -5,23 +5,29 @@ from .cts import build_training_set
 import os
 from random import shuffle
 
-module_dir = os.path.dirname(__file__)
-
-train_df = build_training_set()
-x_train = scale(train_df.iloc[:, 5:])
-y_train = train_df.iloc[:, 3]
-x_train_labels = train_df.iloc[:, 0]
-
-target_df = pd.read_csv(os.path.join(module_dir,'data.csv'))
-target_df = pd.DataFrame(target_df)
-target_df = target_df.append(train_df)
-target_df = target_df.append(train_df)
-target_df = target_df.drop_duplicates('SeriesName', keep=False)
-
-x_target = scale(target_df.iloc[:, 5:])
-x_target_labels = target_df.iloc[:, 0]
-
 def get_recommendations():
+	module_dir = os.path.dirname(__file__)
+
+	train_df = build_training_set()
+	if train_df is None:
+		return []
+	x_train = train_df.iloc[:, 5:]
+	try:
+		x_train = scale(x_train)
+	except:
+		print("First migrations")
+	y_train = train_df.iloc[:, 3]
+	x_train_labels = train_df.iloc[:, 0]
+
+	target_df = pd.read_csv(os.path.join(module_dir,'data.csv'))
+	target_df = pd.DataFrame(target_df)
+	target_df = target_df.append(train_df)
+	target_df = target_df.append(train_df)
+	target_df = target_df.drop_duplicates('SeriesName', keep=False)
+
+	x_target = scale(target_df.iloc[:, 5:])
+	x_target_labels = target_df.iloc[:, 0]
+
 	clf = RandomForestClassifier()
 	clf.fit(x_train,y_train)
 

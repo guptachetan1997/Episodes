@@ -11,7 +11,11 @@ def get_recommendations():
 	train_df = build_training_set()
 	if train_df is None:
 		return []
-	x_train = scale(train_df.iloc[:, 5:])
+	x_train = train_df.iloc[:, 5:]
+	try:
+		x_train = scale(x_train)
+	except:
+		print("First migrations")
 	y_train = train_df.iloc[:, 3]
 	x_train_labels = train_df.iloc[:, 0]
 

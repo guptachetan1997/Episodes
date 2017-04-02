@@ -1,5 +1,9 @@
 {% extends 'tvshow/header.html' %}
 
+{% block title_modify %}
+<title>{{show.seriesName}}</title>
+{% endblock %}
+
 {% block content %}
 <div class="card-deck">
   <div class="card">
@@ -32,7 +36,7 @@
       </form>
     </div>
     <div class="list-group list-group-flush">
-      {% for season in show.season_set.all %}
+      {% for season in show.sorted_season_set %}
       <a class="list-group-item" data-toggle="modal" data-target="#s{{season.number}}">
         Season {{season.number}} <small> Watched {{season.watch_count}} of {{season.episode_count}} episodes.</small>
       </a>

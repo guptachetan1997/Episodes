@@ -1,5 +1,9 @@
 {% extends 'tvshow/header.html' %}
 
+{% block title_modify %}
+<title>Add</title>
+{% endblock %}
+
 {% block content %}
 <div class="row text-xs-center">
   <form class="form-inline" method="post" action="/add_search">{% csrf_token %}

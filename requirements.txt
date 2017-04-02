@@ -12,3 +12,4 @@ six==1.10.0
 webencodings==0.5
 dj-database-url==0.4.2
 psycopg2==2.7.1
+gunicorn==19.6.0

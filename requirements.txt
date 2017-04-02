@@ -8,9 +8,7 @@ pandas==0.17.1
 python-dateutil==2.6.0
 pytz==2016.10
 requests==2.12.4
-scikit-learn==0.18.1
 six==1.10.0
-scipy==0.17.0
 webencodings==0.5
 dj-database-url==0.4.2
 psycopg2==2.7.1

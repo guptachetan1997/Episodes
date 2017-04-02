@@ -10,8 +10,10 @@
 	{% endblock %}
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
-  <!-- <link rel="shortcut icon" href="http://www.iconj.com/ico/j/w/jwsdjrfgmh.ico" type="image/x-icon" /> -->
 	<link rel="shortcut icon" href="http://www.iconj.com/ico/c/a/caxmfwmgrw.ico" type="image/x-icon" />
+	{% load staticfiles %}
+	<link rel="manifest" href="{% static 'Episodes/json/manifest.json' %}">
+	<script src="{% static 'Episodes/js/index.js' %}" async></script>
 </head>
 
 <body>

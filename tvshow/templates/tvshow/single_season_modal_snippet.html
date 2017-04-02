@@ -15,7 +15,7 @@
       </div>
       <div class="modal-body">
         <ul class="list-group">
-          {% for episode in season.episode_set.all %}
+          {% for episode in season.sorted_episodes_set %}
           <li class="list-group-item">
             {{episode.number}}. <a data-toggle="collapse" href="#collapseS{{episode.season.number}}E{{episode.number}}" aria-expanded="false" aria-controls="collapseS{{episode.season.number}}E{{episode.number}}">{{episode.episodeName}}</a> <small>{{episode.firstAired}}</small>
             <form class='form-inline float-xs-right' action="/episode_swt" method="post">{% csrf_token %}

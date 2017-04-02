@@ -21,7 +21,7 @@ class Show(models.Model):
 	modified = models.DateTimeField(null=True, blank=True, auto_now=True, auto_now_add=False)
 	siteRating = models.DecimalField(max_digits=5, null=True, decimal_places=3 , blank=True, default=0)
 	userRating = models.DecimalField(max_digits=5, null=True, decimal_places=3 , blank=True, default=0)
-	network = models.CharField(max_length=50)
+	network = models.CharField(max_length=50, null=True, blank=True)
 	genre_list = models.TextField(null=True, blank=True)
 	last_updated = models.DateTimeField(null=True, blank=True)
 
@@ -130,6 +130,10 @@ class Season(models.Model):
 			self.episode_set.all().update(status_watched = True)
 			self.status_watched = True
 			self.save()
+
+	@property
+	def sorted_episodes_set(self):
+		return self.episode_set.order_by("number")
 
 	@property
 	def watch_count(self):

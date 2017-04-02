@@ -1,7 +1,11 @@
 from django.conf.urls import url
+from django.contrib.auth import views as auth_views
 from .views import (home, add_search, add ,single_show, episode_swt, season_swt, search, update_show, update_show_rating, recommended, update_all_continuing, delete_show)
 urlpatterns = [
-    url(r'^(?P<view_type>|all||)$', home),
+    url(r'^login/$', auth_views.login, name='login'),
+    url(r'^logout/$', auth_views.logout, {'next_page': '/login'} , name='logout'),
+
+    url(r'^(?P<view_type>|all||)$', home, name="home"),
     url(r'^update_all_shows', update_all_continuing),
     url(r'^update_show', update_show),
     url(r'^delete_show', delete_show),

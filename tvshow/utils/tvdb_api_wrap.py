@@ -21,17 +21,22 @@ def get_new_token():
 	return r.json()['token']
 
 def get_token():
-	modify_time = os.path.getmtime(os.path.join(settings.PROJECT_ROOT, 'token.datas'))
-	if time.time() - modify_time > 82800:
-		try :
-			new_token = get_new_token()
-		except:
-			print('API MUST BE DOWN')
-		with open(os.path.join(settings.PROJECT_ROOT, 'token.datas'),'w') as file:
-			file.write(new_token)
-	with open(os.path.join(settings.PROJECT_ROOT, 'token.datas')) as file:
-		token = file.read()
-	return (token)
+	try :
+		new_token = get_new_token()
+	except:
+		print('API MUST BE DOWN')
+	return new_token
+	# modify_time = os.path.getmtime(os.path.join(settings.PROJECT_ROOT, 'token.datas'))
+	# if time.time() - modify_time > 82800:
+	# 	try :
+	# 		new_token = get_new_token()
+	# 	except:
+	# 		print('API MUST BE DOWN')
+	# 	with open(os.path.join(settings.PROJECT_ROOT, 'token.datas'),'w') as file:
+	# 		file.write(new_token)
+	# with open(os.path.join(settings.PROJECT_ROOT, 'token.datas')) as file:
+	# 	token = file.read()
+	# return (token)
 
 def search_series_list(series_name):
 	token = get_token()

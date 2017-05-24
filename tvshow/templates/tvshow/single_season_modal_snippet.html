@@ -12,6 +12,11 @@
           <button class="btn btn-sm btn-primary float-xs-right" type="submit">Mark Watched</button>
           {% endif %}
         </form>
+        <form class="form-inline" action="/delete_season" method="post">{% csrf_token %}
+          <button class="btn btn-sm btn-danger float-xs-right" type="submit">Delete</button>
+          <input type="hidden" name="season_id" value="{{season.id}}">
+          <input type="hidden" name="show_id" value="{{show.id}}">
+        </form>
       </div>
       <div class="modal-body">
         <ul class="list-group">

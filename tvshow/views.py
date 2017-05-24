@@ -170,3 +170,19 @@ def delete_show(request):
             except:
                 return HttpResponseRedirect('/')
     return HttpResponseRedirect('/')
+
+@login_required
+@csrf_protect
+def delete_season(request):
+    if request.method == 'POST':
+        season_id = request.POST.get('season_id')
+        show_id = request.POST.get('show_id')
+        if season_id:
+            try:
+                season = Season.objects.get(id=season_id)
+                season.delete()
+                show = Show.objects.get(id=show_id)
+                return HttpResponseRedirect('/show/{}'.format(show.slug))
+            except:
+                return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/')

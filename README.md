@@ -17,16 +17,8 @@ To use clone the production branch, install requirements, run the following term
     $ python3 manage.py makemigrations
     $ python3 manage.py migrate
     $ python3 manage.py runserver
-
-<br/>
-<br/>
-![alt tag](https://github.com/guptachetan1997/Episodes/blob/master/1.jpeg)
-<br/>
-<br/>
-![alt tag](https://github.com/guptachetan1997/Episodes/blob/master/2.jpeg)
-<br/>
-<br/>
-![alt tag](https://github.com/guptachetan1997/Episodes/blob/master/3.jpeg)
-<br/>
-<br/>
-![alt tag](https://github.com/guptachetan1997/Episodes/blob/master/4.jpeg)
+    
+![alt tag](https://raw.githubusercontent.com/guptachetan1997/Episodes/master/1.jpeg)
+![alt tag](https://raw.githubusercontent.com/guptachetan1997/Episodes/master/2.jpeg)
+![alt tag](https://raw.githubusercontent.com/guptachetan1997/Episodes/master/3.jpeg)
+![alt tag](https://raw.githubusercontent.com/guptachetan1997/Episodes/master/4.jpeg)

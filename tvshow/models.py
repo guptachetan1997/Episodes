@@ -32,7 +32,7 @@ class Show(models.Model):
 		self.seriesName = data['seriesName']
 		self.slug = slugify(self.seriesName)
 		self.overview = data['overview']
-		self.banner = 'https://thetvdb.com/banners/' + data['banner']
+		self.banner = 'http://thetvdb.com/banners/' + data['banner']
 		self.imbdID = data['imdbID']
 		self.tvdbID = data['tvdbID']
 		self.siteRating = data['siteRating']
@@ -76,9 +76,9 @@ class Show(models.Model):
 	def sorted_season_set(self):
 		return self.season_set.order_by("number")
 
-	def updateBannerToHttps(self):
+	def updateBannerToHttp(self):
 		found = self.banner.find("/")
-		self.banner = "https:" + self.banner[found:]
+		self.banner = "http:" + self.banner[found:]
 		self.save()
 
 

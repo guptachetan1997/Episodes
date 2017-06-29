@@ -4,9 +4,11 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.db.models import Q
 import json
-from .utils.tvdb_api_wrap import download_image,get_season_episode_list,get_all_episodes
+from .utils.tvdb_api_wrap import download_image,get_season_episode_list,get_all_episodes,getSeriesBanners
 
 # Create your models here.
+
+TVDB_BANNER_BASE_URL = 'http://thetvdb.com/banners/'
 
 class Show(models.Model):
 	tvdbID = models.CharField(max_length=50)
@@ -32,7 +34,7 @@ class Show(models.Model):
 		self.seriesName = data['seriesName']
 		self.slug = slugify(self.seriesName)
 		self.overview = data['overview']
-		self.banner = 'http://thetvdb.com/banners/' + data['banner']
+		self.banner = TVDB_BANNER_BASE_URL + data['banner']
 		self.imbdID = data['imdbID']
 		self.tvdbID = data['tvdbID']
 		self.siteRating = data['siteRating']
@@ -85,6 +87,10 @@ class Show(models.Model):
 	def update_show_data(self):
 		flag = False
 		tvdbID = self.tvdbID
+		newBanner = getSeriesBanners(tvdbID)
+		if newBanner:
+			self.banner = TVDB_BANNER_BASE_URL + newBanner
+			self.save()
 		current_season = self.season_set.all().last()
 		if current_season:
 			current_season_db_data = current_season.episode_set.all().order_by("id")

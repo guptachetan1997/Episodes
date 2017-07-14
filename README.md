@@ -2,6 +2,7 @@
 TV show Episode tracker built using django and bootstrap4.<br/>
 Episodes allows you to keep track of your favourite tv shows either continuing or ending and also provide you with recommendations based on your likings using machine learning using libraries like pandas, sci-kit learn, numpy etc.
 Using http://thetvdb.com/ for metadata.
+Inspired from https://github.com/jamienicol/episodes
 
 Requirements:
 

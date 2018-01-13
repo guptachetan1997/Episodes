@@ -12,7 +12,7 @@ TVDB_BANNER_BASE_URL = 'http://thetvdb.com/banners/'
 
 class Show(models.Model):
 	tvdbID = models.CharField(max_length=50)
-	seriesName = models.CharField(max_length=50)
+	seriesName = models.CharField(max_length=100)
 	overview = models.TextField()
 	banner = models.CharField(max_length=150, null=True, blank=True)
 	imbdID = models.CharField(max_length=50, null=True, blank=True)
@@ -172,7 +172,7 @@ class Season(models.Model):
 
 class Episode(models.Model):
 	season = models.ForeignKey(Season, on_delete=models.CASCADE)
-	episodeName = models.CharField(max_length=50, blank=True, null=True)
+	episodeName = models.CharField(max_length=100, blank=True, null=True)
 	number = models.IntegerField()
 	firstAired = models.DateField(null=True, blank = True)
 	date_watched = models.DateField(null=True, blank=True, auto_now=True, auto_now_add=False)

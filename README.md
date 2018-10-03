@@ -23,3 +23,17 @@ To use clone the production branch, install requirements, run the following term
 ![alt tag](https://raw.githubusercontent.com/guptachetan1997/Episodes/master/2.jpeg)
 ![alt tag](https://raw.githubusercontent.com/guptachetan1997/Episodes/master/3.jpeg)
 ![alt tag](https://raw.githubusercontent.com/guptachetan1997/Episodes/master/4.jpeg)
+
+## Using docker
+You can build the image with 
+
+```docker build -t episodes .```
+
+and run it with
+
+```docker run --rm -ti -v YOUR_DIRECTORY_FOR_SQLITE_FILE:/data -p 8000:8000 episodes```
+
+Todo:
+* run daemonized
+* set timezone/mount settings
+* optimize image size

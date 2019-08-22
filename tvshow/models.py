@@ -8,7 +8,7 @@ from .utils.tvdb_api_wrap import download_image,get_season_episode_list,get_all_
 
 # Create your models here.
 
-TVDB_BANNER_BASE_URL = 'http://thetvdb.com/banners/'
+TVDB_BANNER_BASE_URL = 'https://thetvdb.com/banners/'
 
 class Show(models.Model):
 	tvdbID = models.CharField(max_length=50)

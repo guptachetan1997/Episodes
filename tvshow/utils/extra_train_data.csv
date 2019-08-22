@@ -1,9 +1,0 @@
-SeriesName,tvdbID,Network,tvdbRating,indicator,Action,Adventure,Animation,Children,Comedy,Crime,Documentary,Drama,Family,Fantasy,Food,Game Show,Home and Garden,Horror,Mini-Series,Mystery,News,Reality,Romance,Science-Fiction,Soap,Special Interest,Sport,Suspense,Talk Show,Thriller,Travel,Western
-Desperate Housewives,73800,ABC (US),6,408,0,0,0,0,0.333333333333333,0,0,0.333333333333333,0,0,0,0,0,0,0,0,0,0,0,0,0.333333333333333,0,0,0,0,0,0,0
-The Simpsons,71663,FOX,5,423,0,0,0.333333333333333,0,0.333333333333333,0,0,0,0.333333333333333,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-Ugly Betty,79352,ABC (US),4,119,0,0,0,0,0.5,0,0,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-CSI: Miami,78310,CBS,7,119,0.333333333333333,0,0,0,0,0.333333333333333,0,0.333333333333333,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-Game of Arms,278591,AMC,2,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0
-Camp WWE,311098,USA Network,1,3,0,0,0.5,0,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-Dancing with the Stars,79590,ABC (US),3,135,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0
-The Victoria's Secret Fashion Show,79619,CBS,1,180,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0

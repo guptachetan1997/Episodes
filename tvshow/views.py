@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_protect
 from .utils.tvdb_api_wrap import search_series_list, get_series_with_id, get_all_episodes
-from .utils.recommender import get_recommendations
 from .models import Show,Season,Episode
 from django.db.models import Q
 from django.contrib import messages
@@ -124,18 +123,6 @@ def season_swt(request):
             show = season.show
             return HttpResponseRedirect('/show/%s'%show.slug)
     return HttpResponseRedirect('/all')
-
-@login_required
-def recommended(request):
-    try:
-        predictions = get_recommendations()
-    except:
-        predictions = []
-    predicted_shows = []
-    for prediction in predictions:
-        predicted_shows.append(get_series_with_id(prediction))
-    shuffle(predicted_shows)
-    return render(request, 'tvshow/recommended.html', {'predicted_shows':predicted_shows})
 
 @login_required
 def search(request):

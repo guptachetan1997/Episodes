@@ -1,6 +1,9 @@
 from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 from .views import (home, add_search, add ,single_show, episode_swt, season_swt, search, update_show, update_show_rating, update_all_continuing, delete_show, delete_season)
+
+app_name = "tvshow"
+
 urlpatterns = [
     url(r'^login/$', auth_views.LoginView.as_view(), name='login'),
     url(r'^logout/$', auth_views.LogoutView.as_view(), {'next_page': '/login'} , name='logout'),

@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from django.contrib.auth import views as auth_views
-from .views import (home, add_search, add ,single_show, episode_swt, season_swt, search, update_show, update_show_rating, recommended, update_all_continuing, delete_show, delete_season)
+from .views import (home, add_search, add ,single_show, episode_swt, season_swt, search, update_show, update_show_rating, update_all_continuing, delete_show, delete_season)
 urlpatterns = [
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/login'} , name='logout'),
@@ -11,7 +11,6 @@ urlpatterns = [
     url(r'^delete_show', delete_show),
     url(r'^delete_season', delete_season),
     url(r'^update_rating', update_show_rating),
-    url(r'^recommended', recommended),
     url(r'^add_search', add_search),
     url(r'^add', add),
     url(r'^search', search, name='search'),

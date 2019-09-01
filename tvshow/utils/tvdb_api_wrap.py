@@ -117,7 +117,7 @@ def getSeriesBanners(tvdbID):
 		json_r = requests.get(url, headers=headers).json()
 		if json_r.get("Error"):
 			return None
-		return json_r["data"][-1]["fileName"]:
+		return json_r["data"][-1]["fileName"]
 	except Exception as e:
 		print(e)
 		return None

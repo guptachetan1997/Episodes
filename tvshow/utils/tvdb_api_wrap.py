@@ -110,6 +110,7 @@ def download_image(url, slug):
 	return os.path.join('media', os.path.basename(slug))
 
 def getSeriesBanners(tvdbID):
+	TVDB_BANNER_BASE_URL = 'https://thetvdb.com/banners/'
 	token = get_token()
 	headers={"Content-Type":"application/json","Accept": "application/json",'Authorization' : 'Bearer '+token, "User-agent": "Mozilla/5.0"}
 	url = "https://api.thetvdb.com/series/{}/images/query?keyType=series&subKey=graphical".format(tvdbID)
@@ -117,7 +118,12 @@ def getSeriesBanners(tvdbID):
 		json_r = requests.get(url, headers=headers).json()
 		if json_r.get("Error"):
 			return None
-		return json_r["data"][-1]["fileName"]
+		for banner in json_r["data"]:
+			check_url = TVDB_BANNER_BASE_URL + banner["fileName"]
+			response = requests.get(check_url)
+			if response.status_code == 200:
+				return banner["fileName"]
+		return None
 	except Exception as e:
 		print(e)
 		return None

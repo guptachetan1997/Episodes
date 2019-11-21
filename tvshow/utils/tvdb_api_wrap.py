@@ -13,7 +13,7 @@ else:
 def get_new_token():
 	apikey = 'DA10DC72930575CA'
 	username = 'gupta.chetan1997'
-	userkey = '217AEB727734271F'
+	userkey = 'U9BI83QIOAGM3H59'
 	payload = json.dumps({'apikey':apikey,'username':username,'userkey':userkey})
 	url = 'https://api.thetvdb.com/login'
 	headers={"Content-Type":"application/json","Accept": "application/json", "User-agent": "Mozilla/5.0"}

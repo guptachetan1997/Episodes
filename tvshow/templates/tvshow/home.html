@@ -11,7 +11,7 @@
   <div class="card">
       {% if flag %}
       <div class="card-header">
-        <p class="card-text text-xs-center">{{show.next_episode.season.number}}.{{show.next_episode.number}} <small>{{show.next_episode.episodeName}}</small></p>
+        <a href='/show/{{show.slug}}'><p class="card-text text-xs-center">{{show.next_episode.season.number}}.{{show.next_episode.number}} <small>{{show.next_episode.episodeName}}</small></p></a>
       </div>
       {% endif %}
       <a href='/show/{{show.slug}}'>

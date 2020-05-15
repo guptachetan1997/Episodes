@@ -30,7 +30,7 @@ def search_series_list(series_name):
 		json_r = requests.get(url, headers=headers).json()
 		return json_r['data'][:10]
 	except:
-		return None
+		return []
 
 def get_series_with_id(tvdbID):
 	token = get_token()

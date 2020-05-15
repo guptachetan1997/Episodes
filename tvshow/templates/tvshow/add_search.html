@@ -17,6 +17,7 @@
   <br><br>
   {% if context.Flag %}
   <div class="container">
+    {% if context.show_datalist %}
     <div class="card-columns">
       {% for show in context.show_datalist %}
       <div class="card">
@@ -33,12 +34,13 @@
             <input type="hidden" name="runningStatus" value="{{show.status}}">
           </form>
         </div>
-      </div>
+      </div>      
       {% endfor %}
     </div>
+    {% else %}
+    <h2 class="display-3 text-xs-center">No results found.</h2>
+    {% endif %}
   </div>
-  {% else %}
-  <h2 class="display-3 text-xs-center">No results found.</h2>
   {% endif %}
 </div>
 {% endblock %}

@@ -88,9 +88,8 @@ def add_search(request):
     if request.method == 'POST':
         search_string = request.POST.get('search_string')
         show_datalist = search_series_list(search_string)
-        if show_datalist is not None:
-            context['Flag'] = True
-            context['show_datalist'] = show_datalist
+        context['show_datalist'] = show_datalist
+        context['Flag'] = True
     return render(request, 'tvshow/add_search.html', {'context': context})
 
 @csrf_protect

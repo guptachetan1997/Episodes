@@ -5,34 +5,40 @@
 {% endblock %}
 
 {% block content %}
-<div class="row text-xs-center">
-  <form class="form-inline" method="post" action="/add_search">{% csrf_token %}
-    <div class="form-group">
-      <input type="text" class="form-control" name="search_string" placeholder="TV Show Name">
-    </div>
-    <button type="submit" class="btn btn-primary">Search</button>
-  </form>
-</div>
-<br><br>
-{% if context.Flag %}
-<div class="card-columns">
-  {% for show in context.show_datalist %}
-  <div class="card">
-    <img class="card-img-top img-fluid" src="http://thetvdb.com/banners/{{show.banner}}" alt="Card image cap">
-    <div class="card-block">
-      <h4 class="card-title">{{show.seriesName}}</h4>
-      <p class="card-text">{{show.overview}}</p>
-      <p class="card-text"><small class="text-muted">First aired {{show.firstAired}}</small></p>
-    </div>
-    <div class="card-block">
-      <form class='form-inline' action="/add" method="post">{% csrf_token %}
-        <button type="submit" class="btn btn-danger-outline">Add</button>
-        <input type="hidden" name="show_id" value="{{show.id}}">
-        <input type="hidden" name="runningStatus" value="{{show.status}}">
-      </form>
+<div class="container">
+  <div class="row text-xs-center" style="padding: 10px;">
+    <form class="form-inline" method="post" action="/add_search">{% csrf_token %}
+      <div class="form-group">
+        <input type="text" class="form-control" name="search_string" placeholder="TV Show Name">
+      </div>
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+  </div>
+  <br><br>
+  {% if context.Flag %}
+  <div class="container">
+    <div class="card-columns">
+      {% for show in context.show_datalist %}
+      <div class="card">
+        <img class="card-img-top img-fluid" src="https://thetvdb.com{{show.image}}" alt="Card image cap">
+        <div class="card-block">
+          <h4 class="card-title">{{show.seriesName}}</h4>
+          <p class="card-text">{{show.overview}}</p>
+          <p class="card-text"><small class="text-muted">First aired {{show.firstAired}}</small></p>
+        </div>
+        <div class="card-block">
+          <form class='form-inline' action="/add" method="post">{% csrf_token %}
+            <button type="submit" class="btn btn-danger-outline">Add</button>
+            <input type="hidden" name="show_id" value="{{show.id}}">
+            <input type="hidden" name="runningStatus" value="{{show.status}}">
+          </form>
+        </div>
+      </div>
+      {% endfor %}
     </div>
   </div>
-  {% endfor %}
+  {% else %}
+  <h2 class="display-3 text-xs-center">No results found.</h2>
+  {% endif %}
 </div>
-{% endif %}
 {% endblock %}

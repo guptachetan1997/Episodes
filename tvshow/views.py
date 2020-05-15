@@ -21,7 +21,7 @@ def home(request, view_type):
         data = [show for show in show_data if not show.is_watched]
         show_data = data
         flag = True
-    return render(request, 'tvshow/home.html', {'show_data':show_data, 'flag':flag})
+    return render(request, 'tvshow/home.html', {'show_data':show_data, 'flag': flag})
 
 @csrf_protect
 @login_required
@@ -91,7 +91,7 @@ def add_search(request):
         if show_datalist is not None:
             context['Flag'] = True
             context['show_datalist'] = show_datalist
-    return render(request, 'tvshow/add_search.html', {'context':context})
+    return render(request, 'tvshow/add_search.html', {'context': context})
 
 @csrf_protect
 @login_required
@@ -105,10 +105,13 @@ def single_show(request, show_slug):
 def episode_swt(request):
     if request.method == 'POST':
         episode_id = request.POST.get('episode_swt')
+        referrer = request.POST.get('referrer', None)
         episode = Episode.objects.get(id = episode_id)
         if episode:
             episode.wst()
             show = episode.season.show
+            if referrer == 'home':
+                return HttpResponseRedirect("/")
             return HttpResponseRedirect('/show/%s'%show.slug)
     return HttpResponseRedirect('/all')
 

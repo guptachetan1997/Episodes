@@ -1,14 +1,9 @@
 import requests
 import json
-from django.utils import six
 import os,time
 from django.conf import settings
 from datetime import datetime
-
-if six.PY2:
-	from urllib import quote
-else:
-	from urllib.parse import quote
+from urllib.parse import quote
 
 def get_new_token():
 	apikey = 'DA10DC72930575CA'
@@ -26,17 +21,6 @@ def get_token():
 	except:
 		print('API MUST BE DOWN')
 	return new_token
-	# modify_time = os.path.getmtime(os.path.join(settings.PROJECT_ROOT, 'token.datas'))
-	# if time.time() - modify_time > 82800:
-	# 	try :
-	# 		new_token = get_new_token()
-	# 	except:
-	# 		print('API MUST BE DOWN')
-	# 	with open(os.path.join(settings.PROJECT_ROOT, 'token.datas'),'w') as file:
-	# 		file.write(new_token)
-	# with open(os.path.join(settings.PROJECT_ROOT, 'token.datas')) as file:
-	# 	token = file.read()
-	# return (token)
 
 def search_series_list(series_name):
 	token = get_token()
@@ -44,7 +28,7 @@ def search_series_list(series_name):
 	url = 'https://api.thetvdb.com/search/series?name=' + quote(series_name)
 	try:
 		json_r = requests.get(url, headers=headers).json()
-		return json_r['data'][:5]
+		return json_r['data'][:10]
 	except:
 		return None
 

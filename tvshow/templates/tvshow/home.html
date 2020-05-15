@@ -5,13 +5,16 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid col-xs-12">
+<div class="container-fluid">
 <div class="card-columns">
   {% for show in show_data %}
   <div class="card">
       {% if flag %}
       <div class="card-header">
-        <a href='/show/{{show.slug}}'><p class="card-text text-xs-center">{{show.next_episode.season.number}}.{{show.next_episode.number}} <small>{{show.next_episode.episodeName}}</small></p></a>
+        <div class="head" style="display: flex;flex-direction: row;justify-content: center;">
+          <a href='/show/{{show.slug}}' style="flex-grow: 1;"><p class="card-text text-xs-center">{{show.next_episode.season.number}}.{{show.next_episode.number}} <small>{{show.next_episode.episodeName}}</small></p></a>
+          <form class='form-inline float-xs-right' action="/episode_swt" method="post">{% csrf_token %}<input type="hidden" name="episode_swt" value="{{show.next_episode.id}}"><input type="hidden" name="referrer" value="home"></input><input type="checkbox" onclick="this.form.submit();"></form>
+        </div>
       </div>
       {% endif %}
       <a href='/show/{{show.slug}}'>

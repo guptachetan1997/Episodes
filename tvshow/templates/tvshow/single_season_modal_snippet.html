@@ -1,22 +1,28 @@
 <div class="modal fade" id="s{{season.number}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" rolepytho="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <form class="form-inline" action="/season_swt" method="post">{% csrf_token %}
-          <button type="button" class="btn btn-sm btn-secondary float-xs-right" data-dismiss="modal">Close</button>
-          <h4 class="modal-title float-xs-left" id="myModalLabel">Season {{season.number}}</h4>
-          <input type="hidden" name="season_swt" value="{{season.id}}">
-          {% if season.status_watched == True %}
-          <button class="btn btn-sm btn-secondary-outline float-xs-right" type="submit">Mark Not Watched</button>
-          {% else %}
-          <button class="btn btn-sm btn-primary float-xs-right" type="submit">Mark Watched</button>
-          {% endif %}
-        </form>
-        <form class="form-inline" action="/delete_season" method="post">{% csrf_token %}
-          <button class="btn btn-sm btn-danger float-xs-right" type="submit">Delete</button>
-          <input type="hidden" name="season_id" value="{{season.id}}">
-          <input type="hidden" name="show_id" value="{{show.id}}">
-        </form>
+      <div class="modal-header" style="display: flex;flex-direction: row;justify-content: space-between;">
+          <h4 class="modal-title" id="myModalLabel" style="flex-grow: 1;">Season {{season.number}}</h4>
+          <div style="padding: 5px;">
+            <form class="form-inline" action="/season_swt" method="post">{% csrf_token %}
+              <input type="hidden" name="season_swt" value="{{season.id}}">
+              {% if season.status_watched == True %}
+              <button class="btn btn-sm btn-secondary-outline" type="submit">Mark Not Watched</button>
+              {% else %}
+              <button class="btn btn-sm btn-primary" type="submit">Mark Watched</button>
+              {% endif %}
+            </form>
+          </div>
+          <div style="padding: 5px;">
+            <form class="form-inline" action="/delete_season" method="post">{% csrf_token %}
+              <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+              <input type="hidden" name="season_id" value="{{season.id}}">
+              <input type="hidden" name="show_id" value="{{show.id}}">
+            </form>
+          </div>
+          <div style="padding: 5px;"> 
+            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+          </div>
       </div>
       <div class="modal-body">
         <ul class="list-group">

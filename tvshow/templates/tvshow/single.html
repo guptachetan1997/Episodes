@@ -124,7 +124,7 @@
   </div>
 </div>
 
-{% for season in show.season_set.all %}
+{% for season in show.seasons.all %}
 {% include 'tvshow/single_season_modal_snippet.html' with season=season %}
 {% endfor %}
 {% endblock %}

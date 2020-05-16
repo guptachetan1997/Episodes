@@ -76,7 +76,7 @@ class Show(models.Model):
 
 	@property
 	def sorted_season_set(self):
-		return self.season_set.order_by("number")
+		return self.seasons.order_by("number")
 
 	def updateBannerToHttp(self):
 		found = self.banner.find("/")
@@ -91,9 +91,9 @@ class Show(models.Model):
 		if newBanner:
 			self.banner = TVDB_BANNER_BASE_URL + newBanner
 			self.save()
-		current_season = self.season_set.all().last()
+		current_season = self.seasons.all().last()
 		if current_season:
-			current_season_db_data = current_season.episode_set.all().order_by("id")
+			current_season_db_data = current_season.episodes.all().order_by("id")
 			current_season_oln_data = get_season_episode_list(tvdbID, current_season.number)
 			counter = 0
 			if current_season_oln_data:
@@ -125,7 +125,7 @@ class Show(models.Model):
 		return flag
 
 class Season(models.Model):
-	show = models.ForeignKey(Show, on_delete=models.CASCADE)
+	show = models.ForeignKey(Show, on_delete=models.CASCADE, related_name='seasons')
 	number = models.IntegerField()
 	status_watched = models.BooleanField(default = False)
 
@@ -142,17 +142,17 @@ class Season(models.Model):
 	def wst(self):
 		self.show.save()
 		if self.status_watched == True:
-			self.episode_set.all().update(status_watched = False)
+			self.episodes.all().update(status_watched = False)
 			self.status_watched = False
 			self.save()
 		else:
-			self.episode_set.all().update(status_watched = True)
+			self.episodes.all().update(status_watched = True)
 			self.status_watched = True
 			self.save()
 
 	@property
 	def sorted_episodes_set(self):
-		return self.episode_set.order_by("number")
+		return self.episodes.order_by("number")
 
 	@property
 	def watch_count(self):
@@ -171,7 +171,7 @@ class Season(models.Model):
 		return flag
 
 class Episode(models.Model):
-	season = models.ForeignKey(Season, on_delete=models.CASCADE)
+	season = models.ForeignKey(Season, on_delete=models.CASCADE, related_name='episodes')
 	episodeName = models.CharField(max_length=100, blank=True, null=True)
 	number = models.IntegerField()
 	firstAired = models.DateField(null=True, blank = True)

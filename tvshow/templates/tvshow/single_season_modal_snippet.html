@@ -7,7 +7,7 @@
             <form class="form-inline" action="/season_swt" method="post">{% csrf_token %}
               <input type="hidden" name="season_swt" value="{{season.id}}">
               {% if season.status_watched == True %}
-              <button class="btn btn-sm btn-secondary-outline" type="submit">Mark Not Watched</button>
+              <button class="btn btn-sm btn-info" type="submit">Mark Not Watched</button>
               {% else %}
               <button class="btn btn-sm btn-primary" type="submit">Mark Watched</button>
               {% endif %}
@@ -29,7 +29,7 @@
           {% for episode in season.sorted_episodes_set %}
           <li class="list-group-item">
             {{episode.number}}. <a data-toggle="collapse" href="#collapseS{{episode.season.number}}E{{episode.number}}" aria-expanded="false" aria-controls="collapseS{{episode.season.number}}E{{episode.number}}">{{episode.episodeName}}</a> <small>{{episode.firstAired}}</small>
-            <form class='form-inline float-xs-right' action="/episode_swt" method="post">{% csrf_token %}
+            <form class='form float-right' action="/episode_swt" method="post">{% csrf_token %}
               <input type="hidden" name="episode_swt" value="{{episode.id}}">
               {% if episode.status_watched == True %}
               <input type="checkbox" onclick="this.form.submit();" checked>
@@ -39,10 +39,8 @@
             </form>
           </li>
           <div class="collapse" id="collapseS{{episode.season.number}}E{{episode.number}}">
-            <div class="card card-block card-inverse card-danger">
-              <p class="card-text">
+            <div class="card card-body bg-danger text-light">
                 {{episode.overview}}
-              </p>
             </div>
           </div>
           {% endfor %}

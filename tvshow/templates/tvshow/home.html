@@ -8,11 +8,11 @@
 <div class="container-fluid">
 <div class="card-columns">
   {% for show in show_data %}
-  <div class="card">
+  <div class="card shadow-sm">
       {% if flag %}
       <div class="card-header">
         <div class="head" style="display: flex;flex-direction: row;justify-content: center;">
-          <a href='/show/{{show.slug}}' style="flex-grow: 1;"><p class="card-text text-xs-center">{{show.next_episode.season.number}}.{{show.next_episode.number}} <small>{{show.next_episode.episodeName}}</small></p></a>
+          <a href='/show/{{show.slug}}' style="flex-grow: 1;"><p class="card-text text-center">{{show.next_episode.season.number}}.{{show.next_episode.number}} <small>{{show.next_episode.episodeName}}</small></p></a>
           <form class='form-inline float-xs-right' action="/episode_swt" method="post">{% csrf_token %}<input type="hidden" name="episode_swt" value="{{show.next_episode.id}}"><input type="hidden" name="referrer" value="home"></input><input type="checkbox" onclick="this.form.submit();"></form>
         </div>
       </div>
@@ -20,11 +20,13 @@
       <a href='/show/{{show.slug}}'>
         <img class="card-img-top img-fluid" src="{{show.banner}}" alt="{{show.seriesName}}">
       </a>
-      {% if show.is_watched %}
-        <progress class="progress progress-striped progress-success" value="{{show.episode_watch_count}}" max="{{show.total_episodes}}"></progress>
-      {% else %}
-        <progress class="progress progress-striped" value="{{show.episode_watch_count}}" max="{{show.total_episodes}}"></progress>
-      {% endif %}
+      <div class="progress">
+        {% if show.is_watched %}
+          <div class="progress-bar progress-bar-striped bg-success" aria-valuenow="{{show.episode_watch_count}}" aria-valuemax="{{show.total_episodes}}" style="width: {% widthratio show.episode_watch_count show.total_episodes 100 %}%"></div>
+        {% else %}
+          <div class="progress-bar progress-bar-striped" aria-valuenow="{{show.episode_watch_count}}" aria-valuemax="{{show.total_episodes}}" style="width: {% widthratio show.episode_watch_count show.total_episodes 100 %}%"></div>
+        {% endif %}
+      </div>
   </div>
   {% endfor %}
 </div>

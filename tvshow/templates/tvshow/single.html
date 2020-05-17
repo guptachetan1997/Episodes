@@ -5,21 +5,28 @@
 {% endblock %}
 
 {% block content %}
+<div class="container-fluid">
 <div class="card-deck">
-  <div class="card">
-    <img class="card-img-top img-fluid" src="{{show.banner}}" alt="Card image cap">
-    <div class="card-block text-xs-center">
-      <a target="_blank" href="http://www.imdb.com/title/{{show.imbdID}}"><h3 class="card-title text-xs-center">{{show.seriesName}}<small class="text-muted"> ({{show.network}})</small></h3></a>
-      {% for genre in show.get_genres %}
-        <span class="tag tag-pill tag-danger text-xs-center">{{genre}}</span>
-      {% endfor %}
-      <br>
-      <br>
-      {% if show.is_watched %}
-        <progress class="progress progress-striped progress-success" value="{{show.episode_watch_count}}" max="{{show.total_episodes}}"></progress>
-      {% else %}
-        <progress class="progress progress-striped" value="{{show.episode_watch_count}}" max="{{show.total_episodes}}"></progress>
-      {% endif %}
+  <div class="card text-center shadow-sm">
+    <img class="card-img-top img-fluid" src="{{show.banner}}">
+    <div class="card-body">
+      <h5 class="card-title">
+        <a target="_blank" href="http://www.imdb.com/title/{{show.imbdID}}"><h3 class="card-title text-xs-center">{{show.seriesName}}<small class="text-muted"> ({{show.network}})</small></h3></a>
+      </h5>
+      <div style="padding-bottom: 15px;">
+        {% for genre in show.get_genres %}
+          <span class="badge badge-pill badge-danger">{{genre}}</span>
+        {% endfor %}
+      </div>
+      <div style="padding-bottom: 15px;">
+        <div class="progress">
+          {% if show.is_watched %}
+        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {% widthratio show.episode_watch_count show.total_episodes 100 %}%" aria-valuemin="0" aria-valuenow="{{show.episode_watch_count}}" aria-valuemax="{{show.total_episodes}}"></div>
+          {% else %}
+            <div class="progress-bar progress-bar-striped" aria-valuenow="{{show.episode_watch_count}}" aria-valuemin="0" aria-valuemax="{{show.total_episodes}}" style="width: {% widthratio show.episode_watch_count show.total_episodes 100 %}%"></div>
+          {% endif %}
+        </div>
+      </div>
       <p class="card-text">
         {{show.overview}}
       </p>
@@ -27,30 +34,30 @@
     </div>
   </div>
 
-  <div class="card">
+  <div class="card shadow-sm">
     <div class="card-header">
       Seasons
-      <form class="form-inlne float-xs-right" action="/update_show" method="post">{% csrf_token %}
+      <form class="form float-right" action="/update_show" method="post">{% csrf_token %}
         <button type="submit" name="button" class="btn btn-warning btn-sm">Update</button>
         <input type="hidden" name="show_info" value="{{show.id}}">
       </form>
     </div>
-    <div class="list-group list-group-flush">
+    <div class="list-group">
       {% for season in show.sorted_season_set %}
-      <a class="list-group-item" data-toggle="modal" data-target="#s{{season.number}}">
-        Season {{season.number}} <small> Watched {{season.watch_count}} of {{season.episode_count}} episodes.</small>
+      <a class="list-group-item list-group-item-action" data-toggle="modal" data-target="#s{{season.number}}">
+        <strong>Season {{season.number}}</strong> <small class="float-right"> Watched {{season.watch_count}} of {{season.episode_count}} episodes.</small>
       </a>
       {% endfor %}
     </div>
   </div>
 
-  <div class="card">
+  <div class="card shadow-sm">
+    <div class="card-header" style="background: #dff0d8;">Next to Watch</div>
     {% if next_episode %}
     <ul class="list-group">
-      <li class="list-group-item list-group-item-success">Next to Watch</li>
       <li class="list-group-item">
         {{next_episode.number}}. <a data-toggle="collapse" href="#collapseE{{next_episode.number}}" aria-expanded="false" aria-controls="collapseE{{next_episode.number}}">{{next_episode.episodeName}}</a> <small>{{next_episode.firstAired}}</small>
-        <form class='form-inline float-xs-right' action="/episode_swt" method="post">{% csrf_token %}
+        <form class='form float-right' action="/episode_swt" method="post">{% csrf_token %}
           <input type="hidden" name="episode_swt" value="{{next_episode.id}}">
           {% if next_episode.status_watched == True %}
           <input type="checkbox" onclick="this.form.submit();" checked>
@@ -60,22 +67,18 @@
         </form>
       </li>
       <div class="collapse" id="collapseE{{next_episode.number}}">
-        <div class="card-block card-inverse card-danger">
-          <p class="card-text">
-            {{next_episode.overview}}
-          </p>
+        <div class="card card-body bg-danger text-light">
+          {{next_episode.overview}}
         </div>
       </div>
     </ul>
     {% endif %}
-    <br>
-    <div class="card-block text-xs-center">
+    <div class="card-body text-center">
       <button class="btn btn-danger">Site Rating : {{show.siteRating|floatformat:"1"}}</button>
-      <br>
-      <br>
       <button class="btn btn-success" data-toggle="modal" data-target=".change-user-rating">Your Rating : {{show.userRating|floatformat:"1"}}</button>
     </div>
   </div>
+</div>
 </div>
 
 <div class="modal fade change-user-rating" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">

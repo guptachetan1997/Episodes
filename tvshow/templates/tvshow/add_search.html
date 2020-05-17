@@ -6,11 +6,9 @@
 
 {% block content %}
 <div class="container">
-  <div class="row text-xs-center" style="padding: 10px;">
-    <form class="form-inline" method="post" action="/add_search">{% csrf_token %}
-      <div class="form-group">
-        <input type="text" class="form-control" name="search_string" placeholder="TV Show Name">
-      </div>
+  <div class="row text-center" style="padding: 10px;justify-content: center;">
+    <form class="form-inline" method="post" action="/add_search" style="display: block;">{% csrf_token %}
+      <input type="text" class="form-control" name="search_string" placeholder="TV Show Name">
       <button type="submit" class="btn btn-primary">Search</button>
     </form>
   </div>
@@ -22,14 +20,14 @@
       {% for show in context.show_datalist %}
       <div class="card">
         <img class="card-img-top img-fluid" src="https://thetvdb.com{{show.image}}" alt="Card image cap">
-        <div class="card-block">
+        <div class="card-body">
           <h4 class="card-title">{{show.seriesName}}</h4>
           <p class="card-text">{{show.overview}}</p>
           <p class="card-text"><small class="text-muted">First aired {{show.firstAired}}</small></p>
         </div>
-        <div class="card-block">
+        <div class="card-body">
           <form class='form-inline' action="/add" method="post">{% csrf_token %}
-            <button type="submit" class="btn btn-danger-outline">Add</button>
+            <button type="submit" class="btn btn-danger">Add</button>
             <input type="hidden" name="show_id" value="{{show.id}}">
             <input type="hidden" name="runningStatus" value="{{show.status}}">
           </form>
@@ -38,7 +36,7 @@
       {% endfor %}
     </div>
     {% else %}
-    <h2 class="display-3 text-xs-center">No results found.</h2>
+    <h2 class="display-3 text-center">No results found.</h2>
     {% endif %}
   </div>
   {% endif %}

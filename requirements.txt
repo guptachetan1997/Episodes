@@ -1,7 +1,7 @@
 beautifulsoup4==4.4.1
 bleach==1.4.2
 Cython==0.25.2
-Django==1.10.1
+Django==1.11.29
 html5lib==0.999999999
 numpy==1.11.1
 pandas==0.17.1
